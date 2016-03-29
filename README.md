@@ -4,9 +4,14 @@ This library provides a STOMP client for Web browser (using Web Sockets) or node
 
 # Project Status
 
-__This project is _no longer maintained_ ([some context about this decision](http://jmesnil.net/weblog/2015/09/04/stepping-out-from-personal-open-source-projects/)).__
+This project is no longer maintained by it's original author (http://jmesnil.net/weblog/2015/09/04/stepping-out-from-personal-open-source-projects/), so
+this fork was created by ThoughtWire Corp to address some deficiencies in STOMP 1.2 and RabbitMQ support.
 
-__If you encounter bugs with it or need enhancements, you can fork it and modify it as the project is under the Apache License 2.0.__
+# Change history
+
+March 29, 2016
+* Issue #1: Add support for deleting durable subscriptions
+* Issue #2: Add support for STOMP 1.2
 
 ## Web Browser support
 
