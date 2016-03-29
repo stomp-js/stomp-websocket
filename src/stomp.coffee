@@ -362,8 +362,8 @@ class Client
     return {
       id: headers.id
 
-      unsubscribe: ->
-        client.unsubscribe headers.id
+      unsubscribe: (hdrs) ->
+        client.unsubscribe headers.id, hdrs
     }
 
   # [UNSUBSCRIBE Frame](http://stomp.github.com/stomp-specification-1.1.html#UNSUBSCRIBE)
@@ -375,12 +375,11 @@ class Client
   #
   #     var subscription = client.subscribe(destination, onmessage);
   #     ...
-  #     subscription.unsubscribe();
-  unsubscribe: (id) ->
+  #     subscription.unsubscribe(headers);
+  unsubscribe: (id, headers={}) ->
     delete @subscriptions[id]
-    @_transmit "UNSUBSCRIBE", {
-      id: id
-    }
+    headers.id = id
+    @_transmit "UNSUBSCRIBE", headers
 
   # [BEGIN Frame](http://stomp.github.com/stomp-specification-1.1.html#BEGIN)
   #
