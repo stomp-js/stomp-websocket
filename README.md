@@ -77,6 +77,7 @@ to send and receive STOMP messages from a server directly in the Web Browser or 
 
  * [Jeff Mesnil](http://jmesnil.net/)
  * [Jeff Lindsay](http://github.com/progrium)
+ * [Vanessa Williams](http://github.com/fridgebuzz)
 
 [doc]: http://jmesnil.net/stomp-websocket/doc/
 [annotated]: http://jmesnil.net/stomp-websocket/doc/stomp.html

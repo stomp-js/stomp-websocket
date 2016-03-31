@@ -312,7 +312,16 @@ class Client
           #       ...
           #     }
           when "RECEIPT"
-            @onreceipt?(frame)
+          # if this is the receipt for a DISCONNECT, close the websocket and call the `disconnectCallback`
+            if (frame.headers["receipt-id"] == @closeReceipt)
+              # Discard the onclose callback to avoid calling the errorCallback when
+              # the client is properly disconnected.
+              @ws.onclose = null
+              @ws.close()
+              @_cleanUp()
+              @disconnectCallback?()
+            else
+              @onreceipt?(frame)
           # [ERROR Frame](http://stomp.github.com/stomp-specification-1.1.html#ERROR)
           when "ERROR"
             errorCallback?(frame)
@@ -331,13 +340,11 @@ class Client
 
   # [DISCONNECT Frame](http://stomp.github.com/stomp-specification-1.1.html#DISCONNECT)
   disconnect: (disconnectCallback, headers={}) ->
+    @disconnectCallback = disconnectCallback
+    unless headers.receipt
+      headers.receipt = "close-" + @counter++
+    @closeReceipt = headers.receipt
     @_transmit "DISCONNECT", headers
-    # Discard the onclose callback to avoid calling the errorCallback when
-    # the client is properly disconnected.
-    @ws.onclose = null
-    @ws.close()
-    @_cleanUp()
-    disconnectCallback?()
 
   # Clean up client resources when it is disconnected or the server did not
   # send heart beats in a timely fashion

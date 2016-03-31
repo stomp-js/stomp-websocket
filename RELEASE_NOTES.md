@@ -1,5 +1,21 @@
 # Release Notes
 
+## 3.0 (2016/03/29)
+
+### STOMP 1.2 and RabbitMQ support
+
+* deletion of durable subscriptions
+* STOMP 1.2 ack/nack headers
+
+### API change
+
+* the `unsubscribe()` method returned by `subscribe()` now takes an optional
+ `headers` argument which can be used to pass headers like `durable:true` and
+ `auto-delete:false` required by RabbitMQ to delete durable subscriptions
+
+* for STOMP 1.2, `ack()` and `nack()` methods send an `id` header rather than
+ a `message-id` header to match the incoming MESSAGE frame.
+
 ## 2.0 (2012/11/29)
 
 ### STOMP 1.1 support
