@@ -272,6 +272,7 @@ class Client
           when "CONNECTED"
             @debug? "connected to server #{frame.headers.server}"
             @connected = true
+            @version = frame.headers.version;
             @_setupHeartbeat(frame.headers)
             @connectCallback? frame
           # [MESSAGE Frame](http://stomp.github.com/stomp-specification-1.1.html#MESSAGE)
@@ -287,7 +288,10 @@ class Client
             onreceive = @subscriptions[subscription] or @onreceive
             if onreceive
               client = this
-              messageID = frame.headers["message-id"]
+              if (@version == Stomp.VERSIONS.V1_2)
+                messageID = frame.headers["ack"]
+              else
+                messageID = frame.headers["message-id"]
               # add `ack()` and `nack()` methods directly to the returned frame
               # so that a simple call to `message.ack()` can acknowledge the message.
               frame.ack = (headers = {}) =>
@@ -308,7 +312,15 @@ class Client
           #       ...
           #     }
           when "RECEIPT"
-            @onreceipt?(frame)
+          # if this is the receipt for a DISCONNECT, close the websocket
+            if (frame.headers["receipt-id"] == @closeReceipt)
+              # Discard the onclose callback to avoid calling the errorCallback when
+              # the client is properly disconnected.
+              @ws.onclose = null
+              @ws.close()
+              @_cleanUp()
+            else
+              @onreceipt?(frame)
           # [ERROR Frame](http://stomp.github.com/stomp-specification-1.1.html#ERROR)
           when "ERROR"
             errorCallback?(frame)
@@ -327,12 +339,10 @@ class Client
 
   # [DISCONNECT Frame](http://stomp.github.com/stomp-specification-1.1.html#DISCONNECT)
   disconnect: (disconnectCallback, headers={}) ->
+    unless headers.receipt
+      headers.receipt = "close-" + @counter++
+    @closeReceipt = headers.receipt
     @_transmit "DISCONNECT", headers
-    # Discard the onclose callback to avoid calling the errorCallback when
-    # the client is properly disconnected.
-    @ws.onclose = null
-    @ws.close()
-    @_cleanUp()
     disconnectCallback?()
 
   # Clean up client resources when it is disconnected or the server did not
@@ -362,8 +372,8 @@ class Client
     return {
       id: headers.id
 
-      unsubscribe: ->
-        client.unsubscribe headers.id
+      unsubscribe: (hdrs) ->
+        client.unsubscribe headers.id, hdrs
     }
 
   # [UNSUBSCRIBE Frame](http://stomp.github.com/stomp-specification-1.1.html#UNSUBSCRIBE)
@@ -375,12 +385,11 @@ class Client
   #
   #     var subscription = client.subscribe(destination, onmessage);
   #     ...
-  #     subscription.unsubscribe();
-  unsubscribe: (id) ->
+  #     subscription.unsubscribe(headers);
+  unsubscribe: (id, headers={}) ->
     delete @subscriptions[id]
-    @_transmit "UNSUBSCRIBE", {
-      id: id
-    }
+    headers.id = id
+    @_transmit "UNSUBSCRIBE", headers
 
   # [BEGIN Frame](http://stomp.github.com/stomp-specification-1.1.html#BEGIN)
   #
@@ -445,7 +454,10 @@ class Client
   #       {'ack': 'client'}
   #     );
   ack: (messageID, subscription, headers = {}) ->
-    headers["message-id"] = messageID
+    if (@version == Stomp.VERSIONS.V1_2)
+      headers["id"] = messageID
+    else
+      headers["message-id"] = messageID
     headers.subscription = subscription
     @_transmit "ACK", headers
 
@@ -465,7 +477,10 @@ class Client
   #       {'ack': 'client'}
   #     );
   nack: (messageID, subscription, headers = {}) ->
-    headers["message-id"] = messageID
+    if (@version == Stomp.VERSIONS.V1_2)
+      headers["id"] = messageID
+    else
+      headers["message-id"] = messageID
     headers.subscription = subscription
     @_transmit "NACK", headers
 
@@ -478,11 +493,11 @@ Stomp =
 
     # Versions of STOMP specifications supported
     supportedVersions: ->
-      '1.1,1.0'
+      '1.2,1.1,1.0'
 
   # This method creates a WebSocket client that is connected to
   # the STOMP server located at the url.
-  client: (url, protocols = ['v10.stomp', 'v11.stomp']) ->
+  client: (url, protocols = ['v10.stomp', 'v11.stomp', 'v12.stomp']) ->
     # This is a hack to allow another implementation than the standard
     # HTML5 WebSocket class.
     #

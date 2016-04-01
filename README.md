@@ -4,9 +4,15 @@ This library provides a STOMP client for Web browser (using Web Sockets) or node
 
 # Project Status
 
-__This project is _no longer maintained_ ([some context about this decision](http://jmesnil.net/weblog/2015/09/04/stepping-out-from-personal-open-source-projects/)).__
+This project is no longer maintained by it's original author (http://jmesnil.net/weblog/2015/09/04/stepping-out-from-personal-open-source-projects/), so
+this fork was created by ThoughtWire Corp to address some deficiencies in STOMP 1.2 and RabbitMQ support.
 
-__If you encounter bugs with it or need enhancements, you can fork it and modify it as the project is under the Apache License 2.0.__
+# Change history
+
+April 1, 2016
+* Issue #1: Add support for deleting durable subscriptions
+* Issue #2: Add support for STOMP 1.2
+* Issue #3: Wait for DISCONNECT receipt before closing web socket
 
 ## Web Browser support
 
@@ -72,6 +78,7 @@ to send and receive STOMP messages from a server directly in the Web Browser or 
 
  * [Jeff Mesnil](http://jmesnil.net/)
  * [Jeff Lindsay](http://github.com/progrium)
+ * [Vanessa Williams](http://github.com/fridgebuzz)
 
 [doc]: http://jmesnil.net/stomp-websocket/doc/
 [annotated]: http://jmesnil.net/stomp-websocket/doc/stomp.html
