@@ -1,5 +1,26 @@
 # Release Notes
 
+## 3.0 (2016/03/29)
+
+### STOMP 1.2 and RabbitMQ support
+
+* deletion of durable subscriptions
+* STOMP 1.2 ack/nack headers
+* graceful shutdown
+
+### API change
+
+* the `unsubscribe()` method returned by `subscribe()` now takes an optional
+ `headers` argument which can be used to pass headers like `durable:true` and
+ `auto-delete:false` required by RabbitMQ to delete durable subscriptions
+
+* for STOMP 1.2, `ack()` and `nack()` methods send an `id` header rather than
+ a `message-id` header to match the incoming MESSAGE frame.
+
+* although the `disconnectCallback` is still called immediately after transmitting
+a DISCONNECT frame, the websocket is not closed by the client until a RECEIPT is
+received. Note that due to server-side behaviour with respect to connection lingering
+the RECEIPT may never be received and the socket will be closed by the server.
 ## 2.0 (2012/11/29)
 
 ### STOMP 1.1 support

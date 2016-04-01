@@ -9,9 +9,10 @@ this fork was created by ThoughtWire Corp to address some deficiencies in STOMP 
 
 # Change history
 
-March 29, 2016
+April 1, 2016
 * Issue #1: Add support for deleting durable subscriptions
 * Issue #2: Add support for STOMP 1.2
+* Issue #3: Wait for DISCONNECT receipt before closing web socket
 
 ## Web Browser support
 
@@ -77,6 +78,7 @@ to send and receive STOMP messages from a server directly in the Web Browser or 
 
  * [Jeff Mesnil](http://jmesnil.net/)
  * [Jeff Lindsay](http://github.com/progrium)
+ * [Vanessa Williams](http://github.com/fridgebuzz)
 
 [doc]: http://jmesnil.net/stomp-websocket/doc/
 [annotated]: http://jmesnil.net/stomp-websocket/doc/stomp.html
