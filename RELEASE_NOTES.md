@@ -1,6 +1,6 @@
 # Release Notes
 
-## 3.0 (2016/03/29)
+## 3.0 (2016/04/01)
 
 ### STOMP 1.2 and RabbitMQ support
 
