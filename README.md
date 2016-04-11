@@ -25,7 +25,7 @@ Online [documentation][doc] describes the library API (including the [annotated 
 
 Install the 'stompjs' module
 
-    $ npm install stompjs
+    $ npm install github:ThoughtWire/stomp-websocket
 
 In the node.js app, require the module with:
 
