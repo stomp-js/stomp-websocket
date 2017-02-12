@@ -6,3 +6,4 @@ dist/test
 TODO.txt
 node_modules
 doc/public
+/.idea/

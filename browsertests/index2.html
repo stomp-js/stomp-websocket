@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Stomp Over Web Socket</title>
+    <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.1.1.css">
+</head>
+<body>
+
+<section>
+    <h1 id="qunit-header">Stomp Over Web Socket</h1>
+    <section>
+        <p>Tests requires that a Stomp Server accepting WebSocket protocol is running with the configuration:</p>
+        <ul>
+            <li>URL: <span id="test_url"></span>
+            <li>Destination: <span id="test_destination"></span>
+            <li>User: <span id="test_login"></span> /  <span id="test_password"></span>
+        </ul>
+        <p>These values can be configured in <a href="unit/config.js">unit/config.js</a>
+    </section>
+
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+
+
+    <pre id="debug"></pre>
+</section>
+
+<script src="https://code.jquery.com/qunit/qunit-2.1.1.js"></script>
+<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js'></script>
+
+<script src="../lib/stomp.js"></script>
+
+<!-- define all valid Test variables used by the tests -->
+<script src="unit/config.js"></script>
+
+<!-- Tests using QUnit 2.x -->
+<script src="unit2/reconnect.js"></script>
+
+</body>
+</html>

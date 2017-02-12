@@ -4,11 +4,13 @@
 #
 # * Copyright (C) 2010-2012 [Jeff Mesnil](http://jmesnil.net/)
 # * Copyright (C) 2012 [FuseSource, Inc.](http://fusesource.com)
+# * Copyright (C) 2017 [Deepak Kumar](https://www.kreatio.com)
 #
 # This library supports:
 #
 # * [STOMP 1.0](http://stomp.github.com/stomp-specification-1.0.html)
 # * [STOMP 1.1](http://stomp.github.com/stomp-specification-1.1.html)
+# * [STOMP 1.2](http://stomp.github.com/stomp-specification-1.2.html)
 #
 # The library is accessed through the `Stomp` object that is set on the `window`
 # when running in a Web browser.
@@ -127,8 +129,15 @@ class Frame
 # All STOMP protocol is exposed as methods of this class (`connect()`,
 # `send()`, etc.)
 class Client
-  constructor: (@ws) ->
-    @ws.binaryType = "arraybuffer"
+  constructor: (ws_fn) ->
+    @ws_fn = ->
+      ws= ws_fn()
+      ws.binaryType = "arraybuffer"
+      ws
+
+    # If it is greater than 0, reconnect in case of an error after reconnect_delay in milli seconds
+    @reconnect_delay= 0
+
     # used to index subscribers
     @counter = 0
     @connected = false
@@ -243,8 +252,19 @@ class Client
   # headers in addition to `client`, `passcode` and `host`.
   connect: (args...) ->
     out = @_parseConnect(args...)
-    [headers, @connectCallback, errorCallback] = out
+    [@headers, @connectCallback, @errorCallback] = out
+    @_connect()
+
+  # Refactored to make it callable multiple times, useful for reconnecting
+  _connect: ->
+    headers = @headers
+    errorCallback = @errorCallback
+
     @debug? "Opening Web Socket..."
+
+    # Get the actual Websocket (or a similar object)
+    @ws= @ws_fn()
+
     @ws.onmessage = (evt) =>
       data = if typeof(ArrayBuffer) != 'undefined' and evt.data instanceof ArrayBuffer
         # the data is stored inside an ArrayBuffer, we decode it to get the
@@ -331,11 +351,25 @@ class Client
       @debug?(msg)
       @_cleanUp()
       errorCallback?(msg)
+      @_schedule_reconnect()
+
     @ws.onopen    = =>
       @debug?('Web Socket Opened...')
       headers["accept-version"] = Stomp.VERSIONS.supportedVersions()
       headers["heart-beat"] = [@heartbeat.outgoing, @heartbeat.incoming].join(',')
       @_transmit "CONNECT", headers
+
+  _schedule_reconnect: ->
+    if @reconnect_delay > 0
+      @debug("STOMP: scheduling reconnection in #{@reconnect_delay}ms")
+      # setTimeout is available in both Browser and Node.js environments
+      setTimeout(=>
+        if @connected
+          @debug?('STOMP: already connected')
+        else
+          @debug?('STOMP: attempting to reconnect')
+          @_connect()
+      , @reconnect_delay)
 
   # [DISCONNECT Frame](http://stomp.github.com/stomp-specification-1.1.html#DISCONNECT)
   disconnect: (disconnectCallback, headers={}) ->
@@ -509,15 +543,31 @@ Stomp =
     #
     # This hack is deprecated and  `Stomp.over()` method should be used
     # instead.
-    klass = Stomp.WebSocketClass || WebSocket
-    ws = new klass(url, protocols)
-    new Client ws
+
+    # See remarks on the function Stomp.over
+    ws_fn= ->
+      klass = Stomp.WebSocketClass || WebSocket
+      new klass(url, protocols)
+
+    new Client ws_fn
 
   # This method is an alternative to `Stomp.client()` to let the user
   # specify the WebSocket to use (either a standard HTML5 WebSocket or
   # a similar object).
+  #
+  # In order to support reconnection, the function Client._connect should be callable more than once. While reconnecting
+  # a new instance of underlying transport (TCP Socket, WebSocket or SockJS) will be needed. So, this function now
+  # alternatively allows passing a function that should return a new instance of the underlying socket.
+  #
+  # Example:
+  #
+  #         var client = Stomp.over(function(){
+  #           return new WebSocket('ws://localhost:15674/ws')
+  #         });
   over: (ws) ->
-    new Client ws
+    ws_fn = if typeof(ws) == "function" then ws else -> ws
+
+    new Client ws_fn
 
   # For testing purpose, expose the Frame class inside Stomp to be able to
   # marshall/unmarshall frames
