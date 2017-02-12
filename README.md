@@ -2,10 +2,16 @@
 
 This library provides a STOMP client for Web browser (using Web Sockets) or node.js applications (either using raw TCP sockets or Web Sockets).
 
-# Project Status
+# Project Status - Time to create a new home
 
-This project is no longer maintained by its original author (http://jmesnil.net/weblog/2015/09/04/stepping-out-from-personal-open-source-projects/), so
-this fork was created by ThoughtWire Corp to address some deficiencies in STOMP 1.2 and RabbitMQ support.
+This project is no longer maintained by its original author 
+(http://jmesnil.net/weblog/2015/09/04/stepping-out-from-personal-open-source-projects/). However seeing the
+number of forks, this project deserves coordinated effort to keep maintained. Invitations are being sent to
+anyone who seems to have made changes to this project. If you need are willing to contribute please make a request.
+
+Meanwhile check the https://github.com/stomp-js/stomp-websocket/issues to see currently planned work.
+
+Most important probably is Auto Reconnect: https://github.com/ThoughtWire/stomp-websocket/compare/master...stomp-js:reconnect
 
 # Change history
 
