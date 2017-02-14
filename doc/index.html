@@ -174,6 +174,9 @@ It accepts <em>WebSocket connections</em> from the URL <code>ws://localhost:6161
 <pre><code>
   var url = "ws://localhost:61614/stomp";
   var client = <mark>Stomp.client(url)</mark>;
+
+  // Add the following if you need automatic reconnect (delay is in milli seconds)
+  client.reconnect_delay = 500;
 </code></pre>
 
 <p>The <code>Stomp.client(url, protocols)</code> can also be used to override the default subprotocols provided by the library: <code>['v10.stomp', 'v11.stomp]'</code> (for STOMP 1.0 &amp; 1.1 specifications). This second argument can either be a single string or an array of strings to specify multiple subprotocols.
@@ -187,13 +190,17 @@ This method expects an object that conforms to the WebSocket definition.
 <p>For example, it is possible to use the implementation provided by the <a href=https://github.com/sockjs/sockjs-client>SockJS</a> project which falls back to a variety of browser-specific transport protocols instead:
 
 <pre><code>
-  &lt;script src="http://cdn.sockjs.org/sockjs-0.3.min.js">&lt;/script>
-  &lt;script>
-    // use SockJS implementation instead of the browser's native implementation
-    var ws = new SockJS(url);
-    var client = <mark>Stomp.over(ws)</mark>;
-    [...]
-  &lt;/script>
+    <script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
+    <script>
+        // use SockJS implementation instead of the browser's native implementation
+        var client = Stomp.over(function(){
+            return new SockJS(url);
+        });
+
+        // Add the following if you need automatic reconnect (delay is in milli seconds)
+        client.reconnect_delay = 500;
+        [...]
+    </script>
 </code></pre>
 
 <p>Use <code>Stomp.client(url)</code> to use regular WebSockets or use <code>Stomp.over(ws)</code> if you required another type of WebSocket.

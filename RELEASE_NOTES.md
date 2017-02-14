@@ -1,5 +1,10 @@
 # Release Notes
 
+## 3.1 (2017/02/15)
+
+* Support for auto reconnect
+* Minor documentation changes
+
 ## 3.0 (2016/04/01)
 
 ### STOMP 1.2 and RabbitMQ support
