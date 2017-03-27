@@ -20,6 +20,9 @@ export class Client {
         incoming: number,
         outgoing: number
     };
+
+    reconnect_delay: number;
+
     maxWebSocketFrameSize: number;
     subscriptions: {};
     ws: WebSocket;
