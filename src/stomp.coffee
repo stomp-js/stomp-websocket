@@ -383,6 +383,8 @@ class Client
   # send heart beats in a timely fashion
   _cleanUp: () ->
     @connected = false
+    @subscriptions = {}
+    @partial = ''
     Stomp.clearInterval @pinger if @pinger
     Stomp.clearInterval @ponger if @ponger
 

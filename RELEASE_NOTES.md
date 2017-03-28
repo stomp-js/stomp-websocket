@@ -1,11 +1,16 @@
 # Release Notes
 
-## 3.1 (2017/02/15)
+## 2.5.1 (2017/03/28)
+
+* Added typescript definitions. Thanks Jimi Charalampidis (https://github.com/jimic)
+* Published on npmjs.com.
+
+## 2.5.0 (2017/02/15)
 
 * Support for auto reconnect
 * Minor documentation changes
 
-## 3.0 (2016/04/01)
+## 2.4.9 (2016/04/01)
 
 ### STOMP 1.2 and RabbitMQ support
 
