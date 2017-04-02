@@ -34,7 +34,7 @@ export class Client {
     disconnect(disconnectCallback: () => any, headers?: {}): any;
 
     send(destination: string, headers?: {}, body?: string): any;
-    subscribe(destination: string, callback?: (message: Message) => any, headers?: {}): any;
+    subscribe(destination: string, callback?: (message: Message) => any, headers?: {}): StompSubscription;
     unsubscribe(): any;
 
     begin(transaction: string): any;
@@ -43,6 +43,10 @@ export class Client {
 
     ack(messageID: string, subscription: string, headers?: {}): any;
     nack(messageID: string, subscription: string, headers?: {}): any;
+}
+
+export interface StompSubscription {
+    unsubscribe(headers?: {}): void;
 }
 
 export interface Message {

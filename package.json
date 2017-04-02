@@ -1,6 +1,6 @@
 {
   "name": "@stomp/stompjs",
-  "version": "2.5.1",
+  "version": "2.5.3",
   "author": "Deepak Kumar <deepak@kreatio.com>",
   "description": "STOMP for JavaScript apps (Web browser & node.js)",
   "scripts": {
@@ -31,7 +31,8 @@
     "STOMP",
     "Web sockets",
     "messaging",
-    "queue"
+    "queue",
+    "rabbitmq"
   ],
   "license": "Apache-2.0",
   "bugs": {
