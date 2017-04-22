@@ -1,6 +1,6 @@
 {
   "name": "@stomp/stompjs",
-  "version": "2.5.3",
+  "version": "2.5.4",
   "author": "Deepak Kumar <deepak@kreatio.com>",
   "description": "STOMP for JavaScript apps (Web browser & node.js)",
   "scripts": {
