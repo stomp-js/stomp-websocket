@@ -15,6 +15,12 @@ Most important probably is Auto Reconnect: https://github.com/ThoughtWire/stomp-
 
 # Change history
 
+April 26, 2017
+
+- Updated documentation.
+- Support for automatic reconnect.
+- Bundled in TypeScript type definitions.
+
 April 1, 2016
 * Issue #1: Add support for deleting durable subscriptions
 * Issue #2: Add support for STOMP 1.2
@@ -36,7 +42,7 @@ If you were creating your stomp client using Stomp.client
     var client = Stomp.client(url);
     
     // Add the following if you need automatic reconnect (delay is in milli seconds)
-    client.reconnect_delay = 500;
+    client.reconnect_delay = 5000;
 ```
 
 If you were using Stomp.over like:
@@ -62,7 +68,7 @@ Change it to:
                                 });
     
         // Add the following if you need automatic reconnect (delay is in milli seconds)
-        client.reconnect_delay = 500;
+        client.reconnect_delay = 5000;
         [...]
     </script>
 ```
@@ -79,7 +85,7 @@ Notes:
 
 Install the 'stompjs' module
 
-    $ npm install @stomp-js/stompjs
+    $ npm install @stompjs/stompjs
 
 In the node.js app, require the module with:
 
