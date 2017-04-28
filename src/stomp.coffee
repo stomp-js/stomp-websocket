@@ -325,8 +325,8 @@ class Client
               @onStompReconnected(frame)
             @version = frame.headers.version;
             @_setupHeartbeat(frame.headers)
-            @onStompConnected(frame)
             @connectCallback? frame
+            @onStompConnected(frame)
           # [MESSAGE Frame](http://stomp.github.com/stomp-specification-1.1.html#MESSAGE)
           when "MESSAGE"
             # the `onreceive` callback is registered when the client calls
