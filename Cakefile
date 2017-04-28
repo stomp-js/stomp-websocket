@@ -24,7 +24,7 @@ task 'watch', 'Watch for changes in coffee files to build and test', ->
 
 task 'test', 'Run the tests', ->
   util.log "Running tests..."
-  exec binDir + "jasmine-node --nocolor dist/test", (err, stdout, stderr) -> 
+  exec "\""+binDir + "jasmine-node\" --nocolor dist/test", (err, stdout, stderr) ->
     if err
       handleError(parseTestResults(stdout), stderr)
     else
@@ -38,22 +38,22 @@ task 'build', 'Build source and tests', ->
 
 task 'build:src', 'Build the src files into lib', ->
   util.log "Compiling src..."
-  exec binDir + "coffee -o lib/ -c src/", (err, stdout, stderr) -> 
+  exec "\""+binDir + "coffee\" -o lib/ -c src/", (err, stdout, stderr) ->
     handleError(err) if err
 
 task 'build:min', 'Build the minified files into lib', ->
   util.log "Minify src..."
-  exec binDir + "uglifyjs -m --comments all -o lib/stomp.min.js lib/stomp.js", (err, stdout, stderr) ->
+  exec "\""+binDir + "uglifyjs\" -m --comments all -o lib/stomp.min.js lib/stomp.js", (err, stdout, stderr) ->
     handleError(err) if err
 
 task 'build:doc', 'Build docco documentation', ->
   util.log "Building doc..."
-  exec binDir + "docco -o doc/ src/*.coffee", (err, stdout, stderr) -> 
+  exec "\""+binDir + "docco\" -o doc/ src/*.coffee", (err, stdout, stderr) ->
     handleError(err) if err
 
 task 'build:test', 'Build the test files into lib/test', ->
   util.log "Compiling test..."
-  exec binDir + "coffee -o dist/test/ -c test/", (err, stdout, stderr) -> 
+  exec "\""+binDir + "coffee\" -o dist/test/ -c test/", (err, stdout, stderr) ->
     handleError(err) if err
 
 watchDir = (dir, callback) ->

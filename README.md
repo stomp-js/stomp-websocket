@@ -83,13 +83,13 @@ Notes:
 
 ## node.js support
 
-Install the 'stompjs' module
+Install the 'estompjs' module, in package.json within dependencies add
 
-    $ npm install @stompjs/stompjs
+    $ "stompjs": "https://github.com/firestar/stomp-websocket.git",
 
 In the node.js app, require the module with:
 
-    var Stomp = require('stompjs');
+    var Stomp = require('estompjs');
 
 To connect to a STOMP broker over a TCP socket, use the `Stomp.overTCP(host, port)` method:
 

@@ -140,6 +140,11 @@ class Client
 
     # used to index subscribers
     @counter = 0
+
+    #used to check if stomp is reconnecting
+    @reconnecting=0
+
+    #used to check if stomp is connected
     @connected = false
     # Heartbeat properties of the client
     @heartbeat = {
@@ -156,6 +161,29 @@ class Client
     # subscription callbacks indexed by subscriber's ID
     @subscriptions = {}
     @partialData = ''
+
+  # ### onReconnect callback, called when stomp starts reconnecting
+  onReconnect: () ->
+    @debug? ">>> Reconnecting!"
+
+  # ### onReconnected callback, called when socket reconnects
+  onSocketReconnected: () ->
+    @debug? ">>> Socket Reconnected!"
+
+  # ### onReconnected callback, called when stomp reconnects
+  onStompReconnected: (frame) ->
+    @debug? ">>> Stomp Reconnected!"
+
+  #
+  onDisconnected: ()->
+    @debug? ">>> Disconnected!"
+
+  # ### onConnect callback
+  onReady: (frame) ->
+    @debug? ">>> Ready"
+
+  onConnected: () ->
+    @debug? ">>> Connected"
 
   # ### Debugging
   #
@@ -292,8 +320,12 @@ class Client
           when "CONNECTED"
             @debug? "connected to server #{frame.headers.server}"
             @connected = true
+            if @reconnecting == true
+              @reconnecting = false
+              @onStompReconnected(frame)
             @version = frame.headers.version;
             @_setupHeartbeat(frame.headers)
+            @onReady(frame)
             @connectCallback? frame
           # [MESSAGE Frame](http://stomp.github.com/stomp-specification-1.1.html#MESSAGE)
           when "MESSAGE"
@@ -349,8 +381,10 @@ class Client
     @ws.onclose   = =>
       msg = "Whoops! Lost connection to #{@ws.url}"
       @debug?(msg)
+      @onDisconnect()
       @_cleanUp()
       errorCallback?(msg)
+      @connected = false
       @_schedule_reconnect()
 
     @ws.onopen    = =>
@@ -358,9 +392,13 @@ class Client
       headers["accept-version"] = Stomp.VERSIONS.supportedVersions()
       headers["heart-beat"] = [@heartbeat.outgoing, @heartbeat.incoming].join(',')
       @_transmit "CONNECT", headers
+      if @reconnecting == true
+        @onSocketReconnected()
+      @onConnect()
 
   _schedule_reconnect: ->
     if @reconnect_delay > 0
+      @reconnecting = true
       @debug("STOMP: scheduling reconnection in #{@reconnect_delay}ms")
       # setTimeout is available in both Browser and Node.js environments
       setTimeout(=>
@@ -368,6 +406,7 @@ class Client
           @debug?('STOMP: already connected')
         else
           @debug?('STOMP: attempting to reconnect')
+          @onReconnect()
           @_connect()
       , @reconnect_delay)
 
@@ -568,7 +607,24 @@ Stomp =
   #         });
   over: (ws) ->
     ws_fn = if typeof(ws) == "function" then ws else -> ws
+    new Client ws_fn
 
+  over: (ws, onConnect) ->
+    ws_fn = if typeof(ws) == "function" then ws else -> ws
+    @onConnect = onConnect
+    new Client ws_fn
+
+  over: (ws, onConnect, onReconnect) ->
+    ws_fn = if typeof(ws) == "function" then ws else -> ws
+    @onReconnect = onReconnect
+    @onConnect = onConnect
+    new Client ws_fn
+
+  over: (ws, onConnect, onReconnect, onDisconnect) ->
+    ws_fn = if typeof(ws) == "function" then ws else -> ws
+    @onReconnect = onReconnect
+    @onConnect = onConnect
+    @onDisconnect = onDisconnect
     new Client ws_fn
 
   # For testing purpose, expose the Frame class inside Stomp to be able to
