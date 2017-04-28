@@ -381,7 +381,7 @@ class Client
     @ws.onclose   = =>
       msg = "Whoops! Lost connection to #{@ws.url}"
       @debug?(msg)
-      @onDisconnect()
+      @onDisconnected()
       @_cleanUp()
       errorCallback?(msg)
       @connected = false
@@ -394,7 +394,7 @@ class Client
       @_transmit "CONNECT", headers
       if @reconnecting == true
         @onSocketReconnected()
-      @onConnect()
+      @onConnected()
 
   _schedule_reconnect: ->
     if @reconnect_delay > 0
@@ -607,24 +607,6 @@ Stomp =
   #         });
   over: (ws) ->
     ws_fn = if typeof(ws) == "function" then ws else -> ws
-    new Client ws_fn
-
-  over: (ws, onConnect) ->
-    ws_fn = if typeof(ws) == "function" then ws else -> ws
-    @onConnect = onConnect
-    new Client ws_fn
-
-  over: (ws, onConnect, onReconnect) ->
-    ws_fn = if typeof(ws) == "function" then ws else -> ws
-    @onReconnect = onReconnect
-    @onConnect = onConnect
-    new Client ws_fn
-
-  over: (ws, onConnect, onReconnect, onDisconnect) ->
-    ws_fn = if typeof(ws) == "function" then ws else -> ws
-    @onReconnect = onReconnect
-    @onConnect = onConnect
-    @onDisconnect = onDisconnect
     new Client ws_fn
 
   # For testing purpose, expose the Frame class inside Stomp to be able to
