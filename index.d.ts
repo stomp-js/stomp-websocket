@@ -35,8 +35,8 @@ export class Client {
     onSocketReconnected(): void;
     onStompReconnected(frame?: Frame): void;
     onDisconnected(): void;
-    onReady(frame?: Frame): void;
-    onConnected(): void;
+    onStompConnected(frame?: Frame): void;
+    onSocketConnected(): void;
 
     connect(headers: { [key: string]: string }, connectCallback: (frame?: Frame) => any, errorCallback?: (error: string) => any): any;
     connect(login: string, passcode: string, connectCallback: (frame?: Frame) => any, errorCallback?: (error: string) => any, host?: string): any;
