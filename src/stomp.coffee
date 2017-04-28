@@ -179,11 +179,11 @@ class Client
     @debug? ">>> Disconnected!"
 
   # ### onConnect callback
-  onReady: (frame) ->
-    @debug? ">>> Ready"
+  onSocketConnected: () ->
+    @debug? ">>> Socket Connected!"
 
-  onConnected: () ->
-    @debug? ">>> Connected"
+  onStompConnected: (frame) ->
+    @debug? ">>> Stomp Connected!"
 
   # ### Debugging
   #
@@ -325,7 +325,7 @@ class Client
               @onStompReconnected(frame)
             @version = frame.headers.version;
             @_setupHeartbeat(frame.headers)
-            @onReady(frame)
+            @onStompConnected(frame)
             @connectCallback? frame
           # [MESSAGE Frame](http://stomp.github.com/stomp-specification-1.1.html#MESSAGE)
           when "MESSAGE"
@@ -394,7 +394,7 @@ class Client
       @_transmit "CONNECT", headers
       if @reconnecting == true
         @onSocketReconnected()
-      @onConnected()
+      @onSocketConnected()
 
   _schedule_reconnect: ->
     if @reconnect_delay > 0
