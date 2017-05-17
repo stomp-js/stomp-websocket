@@ -35,6 +35,7 @@ export class Client {
 
     send(destination: string, headers?: {}, body?: string): any;
     subscribe(destination: string, callback?: (message: Message) => any, headers?: {}): StompSubscription;
+    onreceive: (message: Message) => void;
     unsubscribe(): any;
 
     begin(transaction: string): any;
