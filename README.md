@@ -85,7 +85,7 @@ Notes:
 
 Install the 'stompjs' module
 
-    $ npm install @stompjs/stompjs
+    $ npm install @stomp/stompjs
 
 In the node.js app, require the module with:
 
