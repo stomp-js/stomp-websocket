@@ -89,7 +89,7 @@ Install the 'stompjs' module
 
 In the node.js app, require the module with:
 
-    var Stomp = require('stompjs');
+    var Stomp = require('@stomp/stompjs');
 
 To connect to a STOMP broker over a TCP socket, use the `Stomp.overTCP(host, port)` method:
 
