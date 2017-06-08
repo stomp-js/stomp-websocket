@@ -69,7 +69,7 @@ export class Frame {
 }
 
 export function client(url: string, protocols?: string | Array<string>): Client;
-export function over(ws: WebSocket): Client;
+export function over(ws: WebSocket | (() => WebSocket)): Client;
 export function overTCP(host: string, port: number): Client;
 export function overWS(url: string): Client;
 export function setInterval(interval: number, f: (...args: any[]) => void): NodeJS.Timer;
