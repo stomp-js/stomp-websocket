@@ -29,43 +29,46 @@ export class Client {
 
     debug(...args: string[]): any;
 
-    connect(headers: { [key: string]: string }, connectCallback: (frame?: Frame) => any, errorCallback?: (error: string) => any): any;
+    connect(headers: Headers, connectCallback: (frame?: Frame) => any, errorCallback?: (error: string) => any): any;
     connect(login: string, passcode: string, connectCallback: (frame?: Frame) => any, errorCallback?: (error: string) => any, host?: string): any;
-    disconnect(disconnectCallback: () => any, headers?: {}): any;
+    disconnect(disconnectCallback: () => any, headers?: Headers): any;
 
-    send(destination: string, headers?: {}, body?: string): any;
-    subscribe(destination: string, callback?: (message: Message) => any, headers?: {}): StompSubscription;
+    send(destination: string, headers?: Headers, body?: string): any;
+    subscribe(destination: string, callback?: (message: Message) => any, headers?: Headers): StompSubscription;
     onreceive: (message: Message) => void;
+    onreceipt: (frame: Frame) => void;
     unsubscribe(): any;
 
     begin(transaction: string): any;
     commit(transaction: string): any;
     abort(transaction: string): any;
 
-    ack(messageID: string, subscription: string, headers?: {}): any;
-    nack(messageID: string, subscription: string, headers?: {}): any;
+    ack(messageID: string, subscription: string, headers?: Headers): any;
+    nack(messageID: string, subscription: string, headers?: Headers): any;
 }
 
 export interface StompSubscription {
-    unsubscribe(headers?: {}): void;
+    unsubscribe(headers?: Headers): void;
 }
 
-export interface Message {
-    command: string;
-    headers: {};
-    body: string;
+export class Headers { [key: string]: string }
 
-    ack(headers?: {}): any;
-    nack(headers?: {}): any;
+export class Message extends Frame {
+    ack(headers?: Headers): any;
+    nack(headers?: Headers): any;
 }
 
 export class Frame {
-    constructor(command: string, headers?: {}, body?: string);
+    constructor(command: string, headers?: Headers, body?: string);
+
+    command: string;
+    headers: Headers;
+    body: string;
 
     toString(): string;
     sizeOfUTF8(s: string): number;
     unmarshall(datas: any): any;
-    marshall(command: string, headers?: {}, body?: string): any;
+    marshall(command: string, headers?: Headers, body?: string): any;
 }
 
 export function client(url: string, protocols?: string | Array<string>): Client;
