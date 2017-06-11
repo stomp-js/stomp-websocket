@@ -29,12 +29,12 @@ export class Client {
 
     debug(...args: string[]): any;
 
-    connect(headers: Headers, connectCallback: (frame?: Frame) => any, errorCallback?: (error: string) => any): any;
+    connect(headers: StompHeaders, connectCallback: (frame?: Frame) => any, errorCallback?: (error: string) => any): any;
     connect(login: string, passcode: string, connectCallback: (frame?: Frame) => any, errorCallback?: (error: string) => any, host?: string): any;
-    disconnect(disconnectCallback: () => any, headers?: Headers): any;
+    disconnect(disconnectCallback: () => any, headers?: StompHeaders): any;
 
-    send(destination: string, headers?: Headers, body?: string): any;
-    subscribe(destination: string, callback?: (message: Message) => any, headers?: Headers): StompSubscription;
+    send(destination: string, headers?: StompHeaders, body?: string): any;
+    subscribe(destination: string, callback?: (message: Message) => any, headers?: StompHeaders): StompSubscription;
     onreceive: (message: Message) => void;
     onreceipt: (frame: Frame) => void;
     unsubscribe(): any;
@@ -43,32 +43,32 @@ export class Client {
     commit(transaction: string): any;
     abort(transaction: string): any;
 
-    ack(messageID: string, subscription: string, headers?: Headers): any;
-    nack(messageID: string, subscription: string, headers?: Headers): any;
+    ack(messageID: string, subscription: string, headers?: StompHeaders): any;
+    nack(messageID: string, subscription: string, headers?: StompHeaders): any;
 }
 
 export interface StompSubscription {
-    unsubscribe(headers?: Headers): void;
+    unsubscribe(headers?: StompHeaders): void;
 }
 
-export class Headers { [key: string]: string }
+export class StompHeaders { [key: string]: string }
 
 export class Message extends Frame {
-    ack(headers?: Headers): any;
-    nack(headers?: Headers): any;
+    ack(headers?: StompHeaders): any;
+    nack(headers?: StompHeaders): any;
 }
 
 export class Frame {
-    constructor(command: string, headers?: Headers, body?: string);
+    constructor(command: string, headers?: StompHeaders, body?: string);
 
     command: string;
-    headers: Headers;
+    headers: StompHeaders;
     body: string;
 
     toString(): string;
     sizeOfUTF8(s: string): number;
     unmarshall(datas: any): any;
-    marshall(command: string, headers?: Headers, body?: string): any;
+    marshall(command: string, headers?: StompHeaders, body?: string): any;
 }
 
 export function client(url: string, protocols?: string | Array<string>): Client;
