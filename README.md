@@ -126,7 +126,7 @@ To continuously run tests on file changes:
 
 * Make sure you have a running STOMP broker which supports the WebSocket protocol
  (see the [documentation][doc])
-* Open in your web browser the project's [test page](browsertests/index.html)
+* Open in your web browser the project's [test page](tests/index.html)
 * Check all tests pass
 
 ## Use

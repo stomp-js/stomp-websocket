@@ -10,14 +10,6 @@
 ###
 
 Stomp = require('./stomp')
-net   = require('net')
-
-# in node.js apps, `setInterval` and `clearInterval` methods used to handle
-# hear-beats are implemented using node.js Timers
-Stomp.Stomp.setInterval = (interval, f) ->
-  setInterval f, interval
-Stomp.Stomp.clearInterval = (id) ->
-  clearInterval id
 
 # wrap a TCP socket (provided by node.js's net module) in a "Web Socket"-like
 # object
@@ -28,12 +20,12 @@ wrapTCP = (port, host) ->
 
   # the "Web Socket"-like object expected by stomp.js
   ws = {
-    url: 'tcp:// ' + host + ':' + port
+    url: 'tcp://' + host + ':' + port
     send: (d) -> socket.write(d)
     close: -> socket.end()
   }
 
-  socket = net.connect port, host, (e) -> ws.onopen()
+  socket = require('net').connect port, host, (e) -> ws.onopen()
   socket.on 'error', (e) -> ws.onclose?(e)
   socket.on 'close', (e) -> ws.onclose?(e)
   socket.on 'data', (data) ->
@@ -79,14 +71,14 @@ wrapWS = (url) ->
 # This method can be used by node.js app to connect to a STOMP broker over a
 # TCP socket
 overTCP = (host, port) ->
-  socket = wrapTCP port, host
-  Stomp.Stomp.over socket
+  socketFn = -> wrapTCP port, host
+  Stomp.Stomp.over socketFn
 
 # This method can be used by node.js app to connect to a STOMP broker over a
 # Web socket
 overWS = (url) ->
-  socket = wrapWS url
-  Stomp.Stomp.over socket
+  socketFn = -> wrapWS url
+  Stomp.Stomp.over socketFn
 
 exports.overTCP = overTCP
 exports.overWS = overWS

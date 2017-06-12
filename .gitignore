@@ -7,3 +7,4 @@ TODO.txt
 node_modules
 doc/public
 /.idea/
+/test.log

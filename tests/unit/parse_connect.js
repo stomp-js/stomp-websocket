@@ -1,74 +1,75 @@
-(function() {
-  module("Parse connect method arguments", {
+(function () {
+  QUnit.module("Parse connect method arguments", {
 
-    setup: function() {
+    beforeEach: function (assert) {
       // prepare something for all following tests
-      myConnectCallback = function() {
+      myConnectCallback = function () {
         // called back when the client is connected to STOMP broker
       };
 
-      myErrorCallback = function() {
+      myErrorCallback = function () {
         // called back if the client can not connect to STOMP broker
       };
 
+      // This only needs to be tested with ws: URL format
       client = Stomp.client(TEST.url);
-      
-      checkArgs = function(args, expectedHeaders, expectedConnectCallback, expectedErrorCallback) {
+
+      checkArgs = function (args, expectedHeaders, expectedConnectCallback, expectedErrorCallback) {
         var headers = args[0];
         var connectCallback = args[1];
         var errorCallback = args[2];
 
-        deepEqual(headers, expectedHeaders);
-        strictEqual(connectCallback, expectedConnectCallback);
-        strictEqual(errorCallback, expectedErrorCallback);        
+        assert.deepEqual(headers, expectedHeaders);
+        assert.strictEqual(connectCallback, expectedConnectCallback);
+        assert.strictEqual(errorCallback, expectedErrorCallback);
       }
     }
   });
 
-  test("connect(login, passcode, connectCallback)", function() {
+  QUnit.test("connect(login, passcode, connectCallback)", function (assert) {
     checkArgs(
       client._parseConnect("jmesnil", "wombats", myConnectCallback),
-      
+
       {login: 'jmesnil', passcode: 'wombats'},
       myConnectCallback,
       undefined);
   });
 
-  test("connect(login, passcode, connectCallback, errorCallback)", function() {
+  QUnit.test("connect(login, passcode, connectCallback, errorCallback)", function (assert) {
     checkArgs(
       client._parseConnect("jmesnil", "wombats", myConnectCallback, myErrorCallback),
-      
+
       {login: 'jmesnil', passcode: 'wombats'},
       myConnectCallback,
       myErrorCallback);
   });
 
-  test("connect(login, passcode, connectCallback, errorCallback, vhost)", function() {
+  QUnit.test("connect(login, passcode, connectCallback, errorCallback, vhost)", function (assert) {
     checkArgs(
       client._parseConnect("jmesnil", "wombats", myConnectCallback, myErrorCallback, "myvhost"),
-      
+
       {login: 'jmesnil', passcode: 'wombats', host: 'myvhost'},
       myConnectCallback,
       myErrorCallback);
   });
 
-  test("connect(headers, connectCallback)", function() {
+  QUnit.test("connect(headers, connectCallback)", function (assert) {
     var headers = {login: 'jmesnil', passcode: 'wombats', host: 'myvhost'};
 
     checkArgs(
       client._parseConnect(headers, myConnectCallback),
-      
+
       headers,
       myConnectCallback,
       undefined);
   });
 
-  test("connect(headers, connectCallback, errorCallback)", function() {
+  QUnit.test("connect(headers, connectCallback, errorCallback)", function (assert) {
     var headers = {login: 'jmesnil', passcode: 'wombats', host: 'myvhost'};
 
     checkArgs(
       client._parseConnect(headers, myConnectCallback, myErrorCallback),
-      
+
       headers,
       myConnectCallback,
       myErrorCallback);

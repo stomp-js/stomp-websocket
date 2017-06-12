@@ -575,6 +575,12 @@ Stomp =
   # marshall/unmarshall frames
   Frame: Frame
 
+# Timer function
+Stomp.setInterval= (interval, f) ->
+  setInterval f, interval
+Stomp.clearInterval= (id) ->
+  clearInterval id
+
 # # `Stomp` object exportation
 
 # export as CommonJS module
@@ -583,12 +589,8 @@ if exports?
 
 # export in the Web Browser
 if window?
-  # in the Web browser, rely on `window.setInterval` to handle heart-beats
-  Stomp.setInterval= (interval, f) ->
-    window.setInterval f, interval
-  Stomp.clearInterval= (id) ->
-    window.clearInterval id
   window.Stomp = Stomp
 # or in the current object (e.g. a WebWorker)
 else if !exports
   self.Stomp = Stomp
+

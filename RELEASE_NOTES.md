@@ -1,5 +1,11 @@
 # Release Notes
 
+## 3.1.x (2017/06/13)
+
+* Updated tests to QUint latest version. Using same set of tests
+  for NodeJS environment.
+* Pruned files and folders no longer needed.
+
 ## 2.5.1 (2017/03/28)
 
 * Added typescript definitions. Thanks Jimi Charalampidis (https://github.com/jimic)
