@@ -1,6 +1,6 @@
 {
   "max_line_length": {
-    "value": 80,
+    "value": 132,
     "level": "warn"
   }
 }

@@ -5,36 +5,34 @@ util   = require 'util'
 binDir = "./node_modules/.bin/"
 
 task 'watch', 'Watch for changes in coffee files to build and test', ->
-    util.log "Watching for changes in src and test"
+    # Before entering watch, ensure that any outstanding changes are accounnted for
+    invoke 'build'
+    invoke 'test'
+    util.log "Watching for changes in src, tests, and docs-src"
     lastTest = 0
     watchDir 'src', ->
-      invoke 'build:src'
-      invoke 'build:min'
+      invoke 'build'
+      invoke 'test'
+    watchDir 'tests', ->
+      invoke 'test'
+    watchDir 'docs-src', ->
       invoke 'build:doc'
-      invoke 'build:test'
-    watchDir 'test', ->
-      invoke 'build:test'
-    watchDir 'dist/test', (file)->
-      # We only want to run tests once (a second), 
-      # even if a bunch of test files change
-      time = new Date().getTime()
-      if (time-lastTest) > 1000
-        lastTest = time
-        invoke 'test'
 
 task 'test', 'Run the tests', ->
   util.log "Running tests..."
-  exec binDir + "jasmine-node --nocolor dist/test", (err, stdout, stderr) -> 
+  # The stdout is much bigger than what Cake is willing to handle, so saving it in a file
+  exec binDir + "qunit --timeout 10000 -c lib/stomp.js -c tests/config/node-config.js -t tests/unit/* > test.log", (err, stdout, stderr) ->
     if err
-      handleError(parseTestResults(stdout), stderr)
+      util.log "Tests fail, please check test.log"
+      handleError(err)
     else
-      displayNotification "Tests pass!"
-      util.log lastLine(stdout)
+      util.log "Tests pass!"
+      testResultsSummary()
 
 task 'build', 'Build source and tests', ->
   invoke 'build:src'
   invoke 'build:min'
-  invoke 'build:test'
+  invoke 'build:doc'
 
 task 'build:src', 'Build the src files into lib', ->
   util.log "Compiling src..."
@@ -46,15 +44,16 @@ task 'build:min', 'Build the minified files into lib', ->
   exec binDir + "uglifyjs -m --comments all -o lib/stomp.min.js lib/stomp.js", (err, stdout, stderr) ->
     handleError(err) if err
 
-task 'build:doc', 'Build docco documentation', ->
-  util.log "Building doc..."
-  exec binDir + "docco -o doc/ src/*.coffee", (err, stdout, stderr) -> 
+task 'build:doc', 'Build API documentation', ->
+  util.log "Building API doc..."
+  exec "rm -rf docs/codo; codo -t 'STOMP.js Documentation' -n 'STOMP.js Documentation' -r docs-src/Introduction.md -o ./docs/codo/ src/* - docs-src/* LICENSE.txt", (err, stdout, stderr) ->
+    handleError(err) if err
+  exec "cp README.md docs/", (err, stdout, stderr) ->
     handleError(err) if err
 
-task 'build:test', 'Build the test files into lib/test', ->
-  util.log "Compiling test..."
-  exec binDir + "coffee -o dist/test/ -c test/", (err, stdout, stderr) -> 
-    handleError(err) if err
+################################################################################
+# Helper functions
+################################################################################
 
 watchDir = (dir, callback) ->
   fs.readdir dir, (err, files) ->
@@ -64,23 +63,12 @@ watchDir = (dir, callback) ->
               if +curr.mtime isnt +prev.mtime
                   callback "#{dir}/#{file}"
 
-parseTestResults = (data) ->
-  lines = (line for line in data.split('\n') when line.length > 5)
-  results = lines.pop()
-  details = lines[1...lines.length-2].join('\n')
-  results + '\n\n' + details + '\n'
-
-lastLine = (data) ->
-  (line for line in data.split('\n') when line.length > 5).pop()
+testResultsSummary = () ->
+  lines = (fs.readFileSync "test.log", 'utf8').split("\n")
+  util.log (lines[-7..-2]).join("\n")
 
 handleError = (error, stderr) -> 
   if stderr? and !error
     util.log stderr
-    displayNotification stderr.match(/\n(Error:[^\n]+)/)?[1]
   else
     util.log error
-    displayNotification error
-        
-displayNotification = (message = '') -> 
-  options = { title: 'CoffeeScript' }
-  try require('growl').notify message, options

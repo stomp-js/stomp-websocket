@@ -10,17 +10,13 @@
 ###
 
 Stomp = require('./stomp')
-net   = require('net')
-
-# in node.js apps, `setInterval` and `clearInterval` methods used to handle
-# hear-beats are implemented using node.js Timers
-Stomp.Stomp.setInterval = (interval, f) ->
-  setInterval f, interval
-Stomp.Stomp.clearInterval = (id) ->
-  clearInterval id
 
 # wrap a TCP socket (provided by node.js's net module) in a "Web Socket"-like
 # object
+#
+# @private
+#
+# @nodoc
 wrapTCP = (port, host) ->
 
   # the raw TCP socket
@@ -28,12 +24,12 @@ wrapTCP = (port, host) ->
 
   # the "Web Socket"-like object expected by stomp.js
   ws = {
-    url: 'tcp:// ' + host + ':' + port
+    url: 'tcp://' + host + ':' + port
     send: (d) -> socket.write(d)
     close: -> socket.end()
   }
 
-  socket = net.connect port, host, (e) -> ws.onopen()
+  socket = require('net').connect port, host, (e) -> ws.onopen()
   socket.on 'error', (e) -> ws.onclose?(e)
   socket.on 'close', (e) -> ws.onclose?(e)
   socket.on 'data', (data) ->
@@ -46,6 +42,10 @@ wrapTCP = (port, host) ->
 
 # wrap a Web Socket connection (provided by the websocket npm module) in a "Web
 # Socket"-like object
+#
+# @private
+#
+# @nodoc
 wrapWS = (url) ->
 
   WebSocketClient = require('websocket').client
@@ -78,15 +78,31 @@ wrapWS = (url) ->
 
 # This method can be used by node.js app to connect to a STOMP broker over a
 # TCP socket
+#
+# @param host [String]
+# @param port [Number]
 overTCP = (host, port) ->
-  socket = wrapTCP port, host
-  Stomp.Stomp.over socket
+  socketFn = -> wrapTCP port, host
+  Stomp.Stomp.over socketFn
 
 # This method can be used by node.js app to connect to a STOMP broker over a
-# Web socket
+# Web socket. This accepts same format as {Stomp~client}.
+#
+# This method is superseded by {Stomp~client}.
+#
+# @deprecated
+#
+# @param url [String]
 overWS = (url) ->
-  socket = wrapWS url
-  Stomp.Stomp.over socket
+  socketFn = -> wrapWS url
+  Stomp.Stomp.over socketFn
 
+# @private
+#
+# @nodoc
 exports.overTCP = overTCP
+
+# @private
+#
+# @nodoc
 exports.overWS = overWS

@@ -5,18 +5,19 @@
   "description": "STOMP for JavaScript apps (Web browser & node.js)",
   "scripts": {
     "build": "cake build",
-    "test": "coffeelint -f coffeelint.json -r src && cake test"
+    "lint": "coffeelint -f coffeelint.json -r src",
+    "test": "cake test"
   },
   "devDependencies": {
-    "coffee-script": "latest",
-    "coffeelint": "latest",
-    "jasmine-node": "latest",
-    "uglify-js": "latest",
-    "docco": "latest",
-    "connect": "latest"
+    "coffee-script": "^1.11.0",
+    "coffeelint": "^1.16.0",
+    "connect": "^3.6.2",
+    "jquery": "^3.2.1",
+    "qunit": "^1.0.0",
+    "uglify-js": "^3.0.15"
   },
   "optionalDependencies": {
-    "websocket": "latest"
+    "websocket": "^1.0.24"
   },
   "directories": {
     "doc": "doc",

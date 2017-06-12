@@ -44,7 +44,9 @@ If you are existing user and will like to deep dive - API Reference for importan
 ## NodeJS
 
 If you are using this library in NodeJS you should definitely check 
-[NodeJS Legacy](https://stomp-js.github.io/stomp-websocket/codo/extra/docs-src/nodejs.md.html).
+[Upgrading](https://stomp-js.github.io/stomp-websocket/codo/extra/docs-src/Upgrade.md.html).
+
+
 
 ## Using with Angular2/4
 
