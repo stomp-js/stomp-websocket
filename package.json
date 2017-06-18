@@ -12,7 +12,6 @@
     "coffee-script": "^1.11.0",
     "coffeelint": "^1.16.0",
     "connect": "^3.6.2",
-    "docco": "^0.7.0",
     "jquery": "^3.2.1",
     "qunit": "^1.0.0",
     "uglify-js": "^3.0.15"

@@ -13,6 +13,10 @@ Stomp = require('./stomp')
 
 # wrap a TCP socket (provided by node.js's net module) in a "Web Socket"-like
 # object
+#
+# @private
+#
+# @nodoc
 wrapTCP = (port, host) ->
 
   # the raw TCP socket
@@ -38,6 +42,10 @@ wrapTCP = (port, host) ->
 
 # wrap a Web Socket connection (provided by the websocket npm module) in a "Web
 # Socket"-like object
+#
+# @private
+#
+# @nodoc
 wrapWS = (url) ->
 
   WebSocketClient = require('websocket').client
@@ -70,15 +78,31 @@ wrapWS = (url) ->
 
 # This method can be used by node.js app to connect to a STOMP broker over a
 # TCP socket
+#
+# @param host [String]
+# @param port [Number]
 overTCP = (host, port) ->
   socketFn = -> wrapTCP port, host
   Stomp.Stomp.over socketFn
 
 # This method can be used by node.js app to connect to a STOMP broker over a
-# Web socket
+# Web socket. This accepts same format as {Stomp~client}.
+#
+# This method is superseded by {Stomp~client}.
+#
+# @deprecated
+#
+# @param url [String]
 overWS = (url) ->
   socketFn = -> wrapWS url
   Stomp.Stomp.over socketFn
 
+# @private
+#
+# @nodoc
 exports.overTCP = overTCP
+
+# @private
+#
+# @nodoc
 exports.overWS = overWS

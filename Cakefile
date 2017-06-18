@@ -5,13 +5,18 @@ util   = require 'util'
 binDir = "./node_modules/.bin/"
 
 task 'watch', 'Watch for changes in coffee files to build and test', ->
-    util.log "Watching for changes in src and tests"
+    # Before entering watch, ensure that any outstanding changes are accounnted for
+    invoke 'build'
+    invoke 'test'
+    util.log "Watching for changes in src, tests, and docs-src"
     lastTest = 0
     watchDir 'src', ->
       invoke 'build'
       invoke 'test'
     watchDir 'tests', ->
       invoke 'test'
+    watchDir 'docs-src', ->
+      invoke 'build:doc'
 
 task 'test', 'Run the tests', ->
   util.log "Running tests..."
@@ -39,9 +44,11 @@ task 'build:min', 'Build the minified files into lib', ->
   exec binDir + "uglifyjs -m --comments all -o lib/stomp.min.js lib/stomp.js", (err, stdout, stderr) ->
     handleError(err) if err
 
-task 'build:doc', 'Build docco documentation', ->
-  util.log "Building doc..."
-  exec binDir + "docco -o doc/ src/*.coffee", (err, stdout, stderr) -> 
+task 'build:doc', 'Build API documentation', ->
+  util.log "Building API doc..."
+  exec "rm -rf docs/codo; codo -t 'STOMP.js Documentation' -n 'STOMP.js Documentation' -r docs-src/Introduction.md -o ./docs/codo/ src/* - docs-src/* LICENSE.txt", (err, stdout, stderr) ->
+    handleError(err) if err
+  exec "cp README.md docs/", (err, stdout, stderr) ->
     handleError(err) if err
 
 ################################################################################

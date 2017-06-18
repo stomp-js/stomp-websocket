@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset='UTF-8'>
+  <title>STOMP.js Documentation</title>
+  <script src='../../javascript/application.js'></script>
+  <script src='../../javascript/search.js'></script>
+  <link rel='stylesheet' href='../../stylesheets/application.css' type='text/css'>
+</head>
+  <body>
+    <div id='base' data-path='../../'></div>
+<div id='header'>
+  <div id='menu'>
+    <a href='../../extra/docs-src/Introduction.md.html' title='STOMP.js Documentation'>
+      STOMP.js Documentation
+    </a>
+    &raquo;
+    <a href='../../alphabetical_index.html' title='Index'>
+      Index
+    </a>
+    &raquo;
+    <span class='title'>docs-src</span>
+    &raquo;
+    <span class='title'>Contribute.md</span>
+  </div>
+</div>
+    <div id='content'>
+      <nav class='toc'>
+        <p class='title'>
+          <a class='hide_toc' href='#'>
+            <strong>Table of Contents</strong>
+          </a>
+          <small>
+            (<a class='float_toc' href='#'>left</a>)
+          </small>
+        </p>
+      </nav>
+      <div id='filecontents'>
+        <h1 id="contributing">Contributing</h1>
+<h2 id="how-to-contribute">How to contribute</h2>
+<ul>
+<li>File issues.</li>
+<li>Edit/write documentation.</li>
+<li>Submit pull requests.</li>
+<li>Test in different environments.</li>
+<li>Raise awareness.</li>
+</ul>
+<h2 id="summary-of-tools">Summary of tools</h2><p>Following tools are getting used:</p><ul>
+<li><code>CoffeeScript</code> as primary language - <a href="http://coffeescript.org/">http://coffeescript.org/</a></li>
+<li><code>codo</code> for API documentation - <a href="https://github.com/coffeedoc/codo">https://github.com/coffeedoc/codo</a></li>
+<li><code>cake</code> for build automation - <a href="http://coffeescript.org/">http://coffeescript.org/</a></li>
+<li><code>qunit</code> for test cases - <a href="http://qunitjs.com/">http://qunitjs.com/</a></li>
+<li><code>nodejs</code> during development - <a href="https://nodejs.org/">https://nodejs.org/</a></li>
+<li><code>yarn</code> for dependency management - <a href="https://yarnpkg.com/">https://yarnpkg.com/</a></li>
+<li><code>npm</code> for packaging and distribution - <a href="https://www.npmjs.com/">https://www.npmjs.com/</a></li>
+</ul>
+<h2 id="initial-setup">Initial setup</h2><p>Instructions on setting up development environment:</p><ul>
+<li>Install <code>node</code> and <code>npm</code> - <a href="https://nodejs.org/">https://nodejs.org/</a></li>
+<li>Install <code>yarn</code> - <a href="https://yarnpkg.com/en/docs/install">https://yarnpkg.com/en/docs/install</a></li>
+<li>Install &#39;codo&#39;, it needs to be installed globally - <code>npm install -g codo</code></li>
+<li>Checkout code from GitHub - you may fork the code first into your GitHub account.</li>
+<li>Use <code>yarn</code> to install dependencies:<pre><code class="lang-bash">  $ yarn
+</code></pre>
+</li>
+</ul>
+<h2 id="project-structure">Project structure</h2>
+<pre>
+├── Cakefile                       - build/watch tasks & scripts
+├── LICENSE.txt
+├── README.md
+├── RELEASE_NOTES.md
+├── bower.json
+├── coffeelint.json
+├── doc/                           - Legacy documentation
+├── docs/                          - Documentation (root of GitHub pages)
+│   └── codo/                      - Generated documentation
+├── docs-src/                      - Guides (kodo build process uses it)
+├── example/                       - Legacy example 
+├── index.d.ts                     - Typescript type definitions
+├── index.js                       - Entry point for nodejs
+├── lib/                           - Compiled JS files
+│   ├── stomp-node.js              - Only used in NodeJS environment
+│   ├── stomp.js                   - Main library code
+│   └── stomp.min.js
+├── package.json
+├── src/                           - CoffeeSctipt files
+│   ├── stomp-node.coffee          - NodeJS specific stuff
+│   └── stomp.coffee               - Main library code
+├── tests/                         - All tests
+│   ├── config/
+│   │   ├── browser-config.js      - Browser specific configuration
+│   │   └── node-config.js         - NodeJS specific configuration
+│   ├── index.html                 - Entry point for browser tests
+│   └── unit/                      - All test files
+└── yarn.lock                      - Current package versions
+</pre>
+
+<h2 id="setup-a-stomp-broker">Setup a Stomp broker</h2>
+<ul>
+<li>A Stomp broker is used for running the tests. I have been using RabbitMQ.</li>
+<li>Edit <code>tests/config/browser-config.js</code> and <code>tests/config/node-config.js</code> as per
+your setup. Defaults should work for a RabbitMQ default setup on localhost.</li>
+<li>Please note that in RabbitMQ you will need to enable Stomp and WebStomp plugins.</li>
+</ul>
+<h2 id="building-and-testing">Building and testing</h2><p>To build JavaScript from the CoffeeScript source code:</p><pre><code class="lang-bash">$ cake build
+</code></pre><p>To run tests using nodejs:</p><pre><code class="lang-bash">$ cake test
+</code></pre><p>To continuously run tests on file changes:</p><pre><code class="lang-bash">$ cake watch
+</code></pre>
+<h2 id="browser-tests">Browser Tests</h2>
+<ul>
+<li>Browser and node environments use the same set of test cases.</li>
+<li>Open <code>test/index.html</code> in your browser.</li>
+</ul><p><em><strong>Caution:</strong> As both browser and nodejs use same set of test cases and hence same queue
+names. So, running both together may cause unexpected failures.</em></p><h2 id="submit-pull-requests">Submit pull requests</h2>
+<ul>
+<li>Please follow GitHub guidelines. Raise an issue if you are unclear.</li>
+</ul>
+<h2 id="stomp-api">STOMP API</h2><p>STOMP over WebSocket provides a straightforward mapping from a STOMP frame 
+to a JavaScript object. If you need to understand Stomp protocol,
+please see <a href="http://stomp.github.io/stomp-specification-1.2.html">http://stomp.github.io/stomp-specification-1.2.html</a></p><table>
+<caption>Frame Object</caption>
+<tr><th>Property<th>Type<th>Notes
+<tr><th><code>command</code><td>String<td>name of the frame (<code>&quot;CONNECT&quot;</code>, <code>&quot;SEND&quot;</code>, etc.)
+<tr><th><code>headers</code><td>JavaScript object<td>
+<tr><th><code>body</code><td>String<td>
+</table><p>The <code>command</code> and <code>headers</code> properties will always be defined but the <code>headers</code> 
+can be empty if the frame has no headers. The <code>body</code> can be <code>null</code> if the frame 
+does not have a body.</p>
+      </div>
+    </div>
+    <div id='footer'>
+  By
+  <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
+    Codo
+  </a>
+  2.1.2
+  &#10034;
+  Press H to see the keyboard shortcuts
+  &#10034;
+  <a href='http://twitter.com/netzpirat' target='_parent'>@netzpirat</a>
+  &#10034;
+  <a href='http://twitter.com/_inossidabile' target='_parent'>@_inossidabile</a>
+</div>
+<iframe id='search_frame'></iframe>
+<div id='fuzzySearch'>
+  <input type='text'>
+  <ol></ol>
+</div>
+<div id='help'>
+  <p>
+    Quickly fuzzy find classes, mixins, methods, file:
+  </p>
+  <ul>
+    <li>
+      <span>T</span>
+      Open fuzzy finder dialog
+    </li>
+  </ul>
+  <p>
+    Control the navigation frame:
+  </p>
+  <ul>
+    <li>
+      <span>L</span>
+      Toggle list view
+    </li>
+    <li>
+      <span>C</span>
+      Show class list
+    </li>
+    <li>
+      <span>I</span>
+      Show mixin list
+    </li>
+    <li>
+      <span>F</span>
+      Show file list
+    </li>
+    <li>
+      <span>M</span>
+      Show method list
+    </li>
+    <li>
+      <span>E</span>
+      Show extras list
+    </li>
+  </ul>
+  <p>
+    You can focus and blur the search input:
+  </p>
+  <ul>
+    <li>
+      <span>S</span>
+      Focus search input
+    </li>
+    <li>
+      <span>Esc</span>
+      Blur search input
+    </li>
+  </ul>
+</div>
+  </body>
+</html>

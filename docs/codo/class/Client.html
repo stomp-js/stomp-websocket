@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset='UTF-8'>
+  <title>STOMP.js Documentation</title>
+  <script src='../javascript/application.js'></script>
+  <script src='../javascript/search.js'></script>
+  <link rel='stylesheet' href='../stylesheets/application.css' type='text/css'>
+</head>
+  <body>
+    <div id='base' data-path='../'></div>
+<div id='header'>
+  <div id='menu'>
+    <a href='../extra/docs-src/Introduction.md.html' title='STOMP.js Documentation'>
+      STOMP.js Documentation
+    </a>
+    &raquo;
+    <a href='../alphabetical_index.html' title='Index'>
+      Index
+    </a>
+    &raquo;
+    <span class='title'>Client</span>
+  </div>
+</div>
+    <div id='content'>
+      <h1>
+        Class:
+        Client
+      </h1>
+      <table class='box'>
+        <tr>
+          <td>Defined in:</td>
+          <td>src&#47;stomp.coffee</td>
+        </tr>
+      </table>
+      <h2>Overview</h2>
+      <div class='docstring'>
+  <p>STOMP Client Class</p><p>All STOMP protocol is exposed as methods of this class (<code>connect()</code>,
+<code>send()</code>, etc.)</p>
+</div>
+<div class='tags'>
+</div>
+      <h2>Instance Method Summary</h2>
+      <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#debug-dynamic'>
+        #
+(void)
+<b>debug</b><span>(message)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      By default, debug messages are logged in the window&#39;s console if it is defined. 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#connect-dynamic'>
+        ~
+(void)
+<b>connect</b><span>(headers, connectCallback)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      The <code>connect</code> method accepts different number of arguments and types. 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#disconnect-dynamic'>
+        #
+(void)
+<b>disconnect</b><span>(disconnectCallback, headers = {})</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Disconnect from the STOMP broker. 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#send-dynamic'>
+        #
+(void)
+<b>send</b><span>(destination, headers = {}, body = &#39;&#39;)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Send a message to a named destination. 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#subscribe-dynamic'>
+        #
+(Object)
+<b>subscribe</b><span>(destination, callback, headers = {})</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Subscribe to a STOMP Broker location. 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#unsubscribe-dynamic'>
+        #
+(void)
+<b>unsubscribe</b><span>(id, headers = {})</span>
+      </a>
+    </span>
+    <span class='desc'>
+      It is preferable to unsubscribe from a subscription by calling <code>unsubscribe()</code> directly on the object returned by <code>client.subscribe()</code>:
+
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#begin-dynamic'>
+        #
+(Object)
+<b>begin</b><span>(transaction_id)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Start a transaction, the returned Object has methods - <code>commit</code> and <code>abort</code> 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#commit-dynamic'>
+        #
+(void)
+<b>commit</b><span>(transaction_id)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Commit a transaction. 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#abort-dynamic'>
+        #
+(void)
+<b>abort</b><span>(transaction_id)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Abort a transaction. 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#ack-dynamic'>
+        #
+(void)
+<b>ack</b><span>(messageID, subscription, headers = {})</span>
+      </a>
+    </span>
+    <span class='desc'>
+      ACK a message. 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#nack-dynamic'>
+        #
+(void)
+<b>nack</b><span>(messageID, subscription, headers = {})</span>
+      </a>
+    </span>
+    <span class='desc'>
+      NACK a message. 
+    </span>
+  </li>
+</ul>
+      <h2>Constructor Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='constructor-dynamic'>
+      #
+(void)
+<b>constructor</b><span>(ws_fn)</span>
+      <span class='note private'>Private</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Please do not create instance of this class directly, use one of the methods <a href='../mixin/Stomp.html#client-'>Stomp~client</a>, <a href='../mixin/Stomp.html#over-'>Stomp~over</a>
+or {overTCP}
+in Stomp.</p>
+</div>
+<div class='tags'>
+  <h3>See also:</h3>
+  <ul class='see'>
+    <li>
+      <a href='../mixin/Stomp.html'>Stomp</a>
+    </li>
+  </ul>
+</div>
+  </div>
+</div>
+      <h2>Instance Method Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='debug-dynamic'>
+      #
+(void)
+<b>debug</b><span>(message)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <div class='note'>
+    <strong>Note:</strong>
+    the default can generate lot of log on the console. Set it to empty function to disable 
+  </div>
+  <p>By default, debug messages are logged in the window&#39;s console if it is defined.
+This method is called for every actual transmission of the STOMP frames over the
+WebSocket.</p><p>It is possible to set a <code>debug(message)</code> method
+on a client instance to handle differently the debug messages:</p>
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      
+    </h4>
+    <pre><code class='coffeescript'>  client.debug = function(str) {
+      &#47;&#47; append the debug log to a #debug div
+      $(&quot;#debug&quot;).append(str + &quot;\n&quot;);
+  };</code></pre>
+    <h4>
+      disable logging
+    </h4>
+    <pre><code class='coffeescript'>  client.debug = function(str) {};</code></pre>
+  </div>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>message</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='connect-dynamic'>
+      ~
+(void)
+<b>connect</b><span>(headers, connectCallback)</span>
+      <br>
+      ~
+(void)
+<b>connect</b><span>(headers, connectCallback, errorCallback)</span>
+      <br>
+      ~
+(void)
+<b>connect</b><span>(login, passcode, connectCallback)</span>
+      <br>
+      ~
+(void)
+<b>connect</b><span>(login, passcode, connectCallback, errorCallback)</span>
+      <br>
+      ~
+(void)
+<b>connect</b><span>(login, passcode, connectCallback, errorCallback, host)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <div class='note'>
+    <strong>Note:</strong>
+    When auto reconnect is active, <code>connectCallback</code> and <code>errorCallback</code> will be called on each connect or error 
+  </div>
+  <p>The <code>connect</code> method accepts different number of arguments and types. See the Overloads list. Use the
+version with headers to pass your broker specific options.</p>
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      
+    </h4>
+    <pre><code class='coffeescript'>     client.connect(&#39;guest, &#39;guest&#39;, function(frame) {
+       client.debug(&quot;connected to Stomp&quot;);
+       client.subscribe(destination, function(message) {
+         $(&quot;#messages&quot;).append(&quot;&lt;p&gt;&quot; + message.body + &quot;&lt;&#47;p&gt;\n&quot;);
+       });
+     });</code></pre>
+  </div>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>headers</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+    </li>
+    <li>
+      <span class='name'>connectCallback</span>
+      <span class='type'>
+        (
+          <tt>function(Frame)</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Called upon a successful connect or reconnect </span>
+    </li>
+    <li>
+      <span class='name'>errorCallback</span>
+      <span class='type'>
+        (
+          <tt>function(any)</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Optional, called upon an error. The passed paramer may be a <a href='../class/Frame.html'>Frame</a> or a message </span>
+    </li>
+    <li>
+      <span class='name'>login</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+    </li>
+    <li>
+      <span class='name'>passcode</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+    </li>
+    <li>
+      <span class='name'>host</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Optional, virtual host to connect to. STOMP 1.2 makes it mandatory, however the broker may not mandate it </span>
+    </li>
+  </ul>
+  <h3>
+    Options Hash:
+    (headers):
+  </h3>
+  <ul class='options'>
+    <li>
+      <span class='name'>login</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+    </li>
+    <li>
+      <span class='name'>passcode</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+    </li>
+    <li>
+      <span class='name'>host</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>virtual host to connect to. STOMP 1.2 makes it mandatory, however the broker may not mandate it </span>
+    </li>
+  </ul>
+  <h3>See also:</h3>
+  <ul class='see'>
+    <li>
+      <a href='http://stomp.github.com/stomp-specification-1.2.html#CONNECT_or_STOMP_Frame'>CONNECT Frame</a>
+    </li>
+  </ul>
+  <div class='overloads'>
+    <h3>Overloads:</h3>
+    <div class='overload'>
+      <p class='signature'>
+        ~
+(void)
+<b>connect</b><span>(headers, connectCallback)</span>
+      </p>
+      <div class='tags'>
+</div>
+    </div>
+    <div class='overload'>
+      <p class='signature'>
+        ~
+(void)
+<b>connect</b><span>(headers, connectCallback, errorCallback)</span>
+      </p>
+      <div class='tags'>
+</div>
+    </div>
+    <div class='overload'>
+      <p class='signature'>
+        ~
+(void)
+<b>connect</b><span>(login, passcode, connectCallback)</span>
+      </p>
+      <div class='tags'>
+</div>
+    </div>
+    <div class='overload'>
+      <p class='signature'>
+        ~
+(void)
+<b>connect</b><span>(login, passcode, connectCallback, errorCallback)</span>
+      </p>
+      <div class='tags'>
+</div>
+    </div>
+    <div class='overload'>
+      <p class='signature'>
+        ~
+(void)
+<b>connect</b><span>(login, passcode, connectCallback, errorCallback, host)</span>
+      </p>
+      <div class='tags'>
+</div>
+    </div>
+  </div>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='disconnect-dynamic'>
+      #
+(void)
+<b>disconnect</b><span>(disconnectCallback, headers = {})</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Disconnect from the STOMP broker. To ensure graceful shutdown it sends a DISCONNECT Frame
+and wait till the broker acknowledges.</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>disconnectCallback</span>
+      <span class='type'>
+        (
+          <tt>function()</tt>
+        )
+      </span>
+    </li>
+    <li>
+      <span class='name'>headers</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>optional </span>
+    </li>
+  </ul>
+  <h3>See also:</h3>
+  <ul class='see'>
+    <li>
+      <a href='http://stomp.github.com/stomp-specification-1.2.html#DISCONNECT'>DISCONNECT Frame</a>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='send-dynamic'>
+      #
+(void)
+<b>send</b><span>(destination, headers = {}, body = &#39;&#39;)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <div class='note'>
+    <strong>Note:</strong>
+    Body must be String. You will need to covert the payload to string in case it is not string (e.g. JSON) 
+  </div>
+  <p>Send a message to a named destination. Refer to your STOMP broker documentation for types
+and naming of destinations. The headers will, typically, be available to the subscriber.
+However, there may be special purpose headers corresponding to your STOMP broker.</p>
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      
+    </h4>
+    <pre><code class='coffeescript'>  client.send(&quot;&#47;queue&#47;test&quot;, {priority: 9}, &quot;Hello, STOMP&quot;);</code></pre>
+    <h4>
+      payload without headers
+    </h4>
+    <pre><code class='coffeescript'>  # If you want to send a message with a body, you must also pass the headers argument.
+  client.send(&quot;&#47;queue&#47;test&quot;, {}, &quot;Hello, STOMP&quot;);</code></pre>
+  </div>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>destination</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>mandatory </span>
+    </li>
+    <li>
+      <span class='name'>headers</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Optional </span>
+    </li>
+    <li>
+      <span class='name'>body</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Optional </span>
+    </li>
+  </ul>
+  <h3>See also:</h3>
+  <ul class='see'>
+    <li>
+      <a href='http://stomp.github.com/stomp-specification-1.2.html#SEND'>SEND Frame</a>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='subscribe-dynamic'>
+      #
+(Object)
+<b>subscribe</b><span>(destination, callback, headers = {})</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <div class='note'>
+    <strong>Note:</strong>
+    The library will generate an unique ID if there is none provided in the headers. To use your own ID, pass it using the headers argument 
+  </div>
+  <p>Subscribe to a STOMP Broker location. The return value is an Object with unsubscribe method.</p><p> var subscription = client.subscribe(&quot;/queue/test&quot;, callback);</p>
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      
+    </h4>
+    <pre><code class='coffeescript'> callback = function(message) {
+   &#47;&#47; called when the client receives a STOMP message from the server
+   if (message.body) {
+     alert(&quot;got message with body &quot; + message.body)
+   } else
+   {
+     alert(&quot;got empty message&quot;);
+   }
+ });</code></pre>
+    <h4>
+      Explicit subscription id
+    </h4>
+    <pre><code class='coffeescript'>   var mysubid = &#39;my-subscription-id-001&#39;;
+   var subscription = client.subscribe(destination, callback, { id: mysubid });</code></pre>
+  </div>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>destination</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+    </li>
+    <li>
+      <span class='name'>callback</span>
+      <span class='type'>
+        (
+          <tt>function(message)</tt>
+        )
+      </span>
+    </li>
+    <li>
+      <span class='name'>headers</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>optional </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>Object</tt>
+      )
+      &mdash;
+      <span class='desc'>this object has a method to <code>unsubscribe</code> </span>
+    </li>
+  </ul>
+  <h3>See also:</h3>
+  <ul class='see'>
+    <li>
+      <a href='http://stomp.github.com/stomp-specification-1.2.html#SUBSCRIBE'>SUBSCRIBE Frame</a>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='unsubscribe-dynamic'>
+      #
+(void)
+<b>unsubscribe</b><span>(id, headers = {})</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>It is preferable to unsubscribe from a subscription by calling
+<code>unsubscribe()</code> directly on the object returned by <code>client.subscribe()</code>:</p>
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      
+    </h4>
+    <pre><code class='coffeescript'>  var subscription = client.subscribe(destination, onmessage);
+  ...
+  subscription.unsubscribe();</code></pre>
+  </div>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>id</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+    </li>
+    <li>
+      <span class='name'>headers</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>optional </span>
+    </li>
+  </ul>
+  <h3>See also:</h3>
+  <ul class='see'>
+    <li>
+      <a href='http://stomp.github.com/stomp-specification-1.2.html#UNSUBSCRIBE'>UNSUBSCRIBE Frame</a>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='begin-dynamic'>
+      #
+(Object)
+<b>begin</b><span>(transaction_id)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <div class='note'>
+    <strong>Note:</strong>
+    If no transaction ID is passed, one will be created automatically 
+  </div>
+  <p>Start a transaction, the returned Object has methods - <code>commit</code> and <code>abort</code></p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>transaction_id</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>optional </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>Object</tt>
+      )
+      &mdash;
+      <span class='desc'>member, <code>id</code> - transaction id, methods <code>commit</code> and <code>abort</code> </span>
+    </li>
+  </ul>
+  <h3>See also:</h3>
+  <ul class='see'>
+    <li>
+      <a href='http://stomp.github.com/stomp-specification-1.2.html#BEGIN'>BEGIN Frame</a>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='commit-dynamic'>
+      #
+(void)
+<b>commit</b><span>(transaction_id)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Commit a transaction.
+It is preferable to commit a transaction by calling <code>commit()</code> directly on
+the object returned by <code>client.begin()</code>:</p>
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      
+    </h4>
+    <pre><code class='coffeescript'>  var tx = client.begin(txid);
+  ...
+  tx.commit();</code></pre>
+  </div>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>transaction_id</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+    </li>
+  </ul>
+  <h3>See also:</h3>
+  <ul class='see'>
+    <li>
+      <a href='http://stomp.github.com/stomp-specification-1.2.html#COMMIT'>COMMIT Frame</a>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='abort-dynamic'>
+      #
+(void)
+<b>abort</b><span>(transaction_id)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Abort a transaction.
+It is preferable to abort a transaction by calling <code>abort()</code> directly on
+the object returned by <code>client.begin()</code>:</p>
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      
+    </h4>
+    <pre><code class='coffeescript'>  var tx = client.begin(txid);
+  ...
+  tx.abort();</code></pre>
+  </div>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>transaction_id</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+    </li>
+  </ul>
+  <h3>See also:</h3>
+  <ul class='see'>
+    <li>
+      <a href='http://stomp.github.com/stomp-specification-1.2.html#ABORT'>ABORT Frame</a>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='ack-dynamic'>
+      #
+(void)
+<b>ack</b><span>(messageID, subscription, headers = {})</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>ACK a message. It is preferable to acknowledge a message by calling <code>ack()</code> directly
+on the message handled by a subscription callback:</p>
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      
+    </h4>
+    <pre><code class='coffeescript'>  client.subscribe(destination,
+    function(message) {
+      &#47;&#47; process the message
+      &#47;&#47; acknowledge it
+      message.ack();
+    },
+    {&#39;ack&#39;: &#39;client&#39;}
+  );</code></pre>
+  </div>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>messageID</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+    </li>
+    <li>
+      <span class='name'>subscription</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+    </li>
+    <li>
+      <span class='name'>headers</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>optional </span>
+    </li>
+  </ul>
+  <h3>See also:</h3>
+  <ul class='see'>
+    <li>
+      <a href='http://stomp.github.com/stomp-specification-1.2.html#ACK'>ACK Frame</a>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='nack-dynamic'>
+      #
+(void)
+<b>nack</b><span>(messageID, subscription, headers = {})</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>NACK a message. It is preferable to nack a message by calling <code>nack()</code> directly on the
+message handled by a subscription callback:</p>
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      
+    </h4>
+    <pre><code class='coffeescript'>  client.subscribe(destination,
+    function(message) {
+      &#47;&#47; process the message
+      &#47;&#47; an error occurs, nack it
+      message.nack();
+    },
+    {&#39;ack&#39;: &#39;client&#39;}
+  );</code></pre>
+  </div>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>messageID</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+    </li>
+    <li>
+      <span class='name'>subscription</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+    </li>
+    <li>
+      <span class='name'>headers</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>optional </span>
+    </li>
+  </ul>
+  <h3>See also:</h3>
+  <ul class='see'>
+    <li>
+      <a href='http://stomp.github.com/stomp-specification-1.2.html#NACK'>NACK Frame</a>
+    </li>
+  </ul>
+</div>
+  </div>
+</div>
+    </div>
+    <div id='footer'>
+  By
+  <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
+    Codo
+  </a>
+  2.1.2
+  &#10034;
+  Press H to see the keyboard shortcuts
+  &#10034;
+  <a href='http://twitter.com/netzpirat' target='_parent'>@netzpirat</a>
+  &#10034;
+  <a href='http://twitter.com/_inossidabile' target='_parent'>@_inossidabile</a>
+</div>
+<iframe id='search_frame'></iframe>
+<div id='fuzzySearch'>
+  <input type='text'>
+  <ol></ol>
+</div>
+<div id='help'>
+  <p>
+    Quickly fuzzy find classes, mixins, methods, file:
+  </p>
+  <ul>
+    <li>
+      <span>T</span>
+      Open fuzzy finder dialog
+    </li>
+  </ul>
+  <p>
+    Control the navigation frame:
+  </p>
+  <ul>
+    <li>
+      <span>L</span>
+      Toggle list view
+    </li>
+    <li>
+      <span>C</span>
+      Show class list
+    </li>
+    <li>
+      <span>I</span>
+      Show mixin list
+    </li>
+    <li>
+      <span>F</span>
+      Show file list
+    </li>
+    <li>
+      <span>M</span>
+      Show method list
+    </li>
+    <li>
+      <span>E</span>
+      Show extras list
+    </li>
+  </ul>
+  <p>
+    You can focus and blur the search input:
+  </p>
+  <ul>
+    <li>
+      <span>S</span>
+      Focus search input
+    </li>
+    <li>
+      <span>Esc</span>
+      Blur search input
+    </li>
+  </ul>
+</div>
+  </body>
+</html>
