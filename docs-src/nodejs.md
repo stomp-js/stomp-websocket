@@ -4,11 +4,11 @@
 
 Older versions of this library required different mechanism to instantiate
 the Client object in nodejs than Web Browsers. In recent versions that is no 
-longer the case. Please refer [Usage](Usage.md.html) for suggested way to use
+longer the case. Please refer [Usage](Usage.md) for suggested way to use
 Stomp JS.
 
 If you are already using one of the techniques mentioned in this page and will
-like to upgrade please refer to [Upgrade](Upgrade.md.html).
+like to upgrade please refer to [Upgrade](Upgrade.md).
 
 Code for these methods are not actively maintained. These have some known
 issues that can hang the node environment on certain types connectivity failures.
