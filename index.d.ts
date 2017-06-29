@@ -3,8 +3,6 @@
 // Definitions by: Jimi Charalampidis <https://github.com/jimic>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-/// <reference types="node" />
-
 export const VERSIONS: {
     V1_0: string,
     V1_1: string,
@@ -75,5 +73,3 @@ export function client(url: string, protocols?: string | Array<string>): Client;
 export function over(ws: WebSocket | (() => WebSocket)): Client;
 export function overTCP(host: string, port: number): Client;
 export function overWS(url: string): Client;
-export function setInterval(interval: number, f: (...args: any[]) => void): NodeJS.Timer;
-export function clearInterval(id: NodeJS.Timer): void;
