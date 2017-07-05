@@ -1,15 +1,16 @@
 # Change Log
 
-## 3.1.x (2017/06/18)
+## 3.1.0 (2017/07/05)
 
-* Updated tests to QUint latest version. Using same set of tests
+* Updated tests to QUint latest version. Now using same set of tests
   for NodeJS environment.
 * Pruned files and folders no longer needed.
-* Updated library version.
+* Updated dependencies.
 * Updated build scripts.
 * Refactored entire documentation.
 * Enabled Travis CI (it runs all test cases using NodeJS).
 * Documentation is hosted at GitHub pages.
+* Updated TypeScript type definitions.
 
 ## 2.5.1 (2017/03/28)
 
