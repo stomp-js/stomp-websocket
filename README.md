@@ -63,7 +63,7 @@ Please visit [Change Log](https://stomp-js.github.io/stomp-websocket/codo/extra/
 ## Contributing
 
 If you want to understand the code, develop, contribute. Please visit
-[How to contribute](https://stomp-js.github.io/stomp-websocket/codo/extra/docs-src/Contribute.md.html) - 
+[How to contribute](https://stomp-js.github.io/stomp-websocket/codo/extra/docs-src/Contribute.md.html). 
 
 ## Authors
 
