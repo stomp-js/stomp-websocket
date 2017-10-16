@@ -1,5 +1,16 @@
 ﻿QUnit.module("Stomp Frame");
 
+QUnit.test("escape header value", function (assert) {
+  var out = Stomp.Frame.frEscape("anything\\a\nb\nc\rd\re:f:\\anything\\a\nb\nc\rd\re:f:\\");
+  assert.equal(out, "anything\\\\a\\nb\\nc\\rd\\re\\cf\\c\\\\anything\\\\a\\nb\\nc\\rd\\re\\cf\\c\\\\");
+});
+
+QUnit.test("escape header value", function (assert) {
+  var orig = "anything\\a\nb\nc\rd\re:f:\\anything\\a\nb\nc\rd\re:f:\\";
+  var out = Stomp.Frame.frUnEscape(Stomp.Frame.frEscape(orig));
+  assert.equal(out, orig);
+});
+
 QUnit.test("marshall a CONNECT frame", function (assert) {
   var out = Stomp.Frame.marshall("CONNECT", {login: 'jmesnil', passcode: 'wombats'});
   assert.equal(out, "CONNECT\nlogin:jmesnil\npasscode:wombats\n\n\0");
