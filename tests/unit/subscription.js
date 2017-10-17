@@ -7,7 +7,9 @@ QUnit.module("Stomp Subscription", {
   },
 
   afterEach: function () {
-    client.disconnect();
+    if(client.connected) {
+      client.disconnect();
+    }
   }
 });
 
@@ -24,6 +26,30 @@ QUnit.test("Should receive messages sent to destination after subscribing", func
     });
 
     client.send(TEST.destination, {}, msg);
+  });
+});
+
+QUnit.test("Should receive messages with special chars in headers", function (assert) {
+  // This is a test intended for version 1.2 of STOMP client
+  if (client.version !== Stomp.VERSIONS.V1_2) {
+    assert.expect(0);
+    return;
+  }
+
+  var done = assert.async();
+
+  var msg = 'Is anybody out there?';
+  var cust = 'f:o:o\nbar\rbaz\\foo\nbar\rbaz\\';
+
+  client.connect(TEST.login, TEST.password, function () {
+    client.subscribe(TEST.destination, function (frame) {
+      assert.equal(frame.body, msg);
+      assert.equal(frame.headers.cust, cust);
+
+      done();
+    });
+
+    client.send(TEST.destination, {"cust": cust}, msg);
   });
 });
 

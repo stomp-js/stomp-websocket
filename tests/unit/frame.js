@@ -58,6 +58,39 @@ QUnit.test("unmarshall should support colons (:) in header values", function (as
   assert.equal(Stomp.Frame.unmarshall(msg).frames[0].headers.destination, dest);
 });
 
+QUnit.test("unmarshall should support colons (:) in header values with escaping", function (assert) {
+  var dest = 'foo:bar:baz',
+    msg = "MESSAGE\ndestination: " + 'foo\\cbar\\cbaz' + "\nmessage-id: 456\n\n\0";
+
+  assert.equal(Stomp.Frame.unmarshall(msg, true).frames[0].headers.destination, dest);
+});
+
+QUnit.test("unmarshall should support \\, \\n and \\r in header values with escaping", function (assert) {
+  var dest = 'f:o:o\nbar\rbaz\\foo\nbar\rbaz\\',
+    msg = "MESSAGE\ndestination: " + 'f\\co\\co\\nbar\\rbaz\\\\foo\\nbar\\rbaz\\\\' + "\nmessage-id: 456\n\n\0";
+
+  assert.equal(Stomp.Frame.unmarshall(msg, true).frames[0].headers.destination, dest);
+});
+
+QUnit.test("marshall should support \\, \\n and \\r in header values with escaping", function (assert) {
+  var dest = 'f:o:o\nbar\rbaz\\foo\nbar\rbaz\\',
+    msg = "MESSAGE\ndestination:" + 'f\\co\\co\\nbar\\rbaz\\\\foo\\nbar\\rbaz\\\\' + "\nmessage-id:456\n\n\0";
+
+  assert.equal(Stomp.Frame.marshall("MESSAGE", {"destination": dest, "message-id": "456"}, "", true), msg);
+});
+
+QUnit.test("marshal/unmarshall should support \\, \\n and \\r in header values with escaping", function (assert) {
+  var dest = 'f:o:o\nbar\rbaz\\foo\nbar\rbaz\\';
+  var command = "MESSAGE";
+  var headers = {"destination": dest, "message-id": "456"};
+  var body = "";
+
+  var msg = Stomp.Frame.marshall(command, headers, body, true);
+  var frame = Stomp.Frame.unmarshall(msg, true).frames[0];
+
+  assert.deepEqual(frame.headers, headers);
+});
+
 QUnit.test("only the 1st value of repeated headers is used", function (assert) {
   var msg = "MESSAGE\ndestination: /queue/test\nfoo:World\nfoo:Hello\n\n\0";
 
