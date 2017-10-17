@@ -386,7 +386,7 @@ class Client
             @connected = true
             @version = frame.headers.version;
             # STOMP version 1.2 needs header values to be escaped
-            if @version == '1.2'
+            if @version == Stomp.VERSIONS.V1_2
               @escapeHeaderValues = true
             @_setupHeartbeat(frame.headers)
             @connectCallback? frame
