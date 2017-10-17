@@ -58,7 +58,7 @@ class Frame
 
     for own name, value of @headers
       if @escapeHeaderValues && @command != 'CONNECT' && @command != 'CONNECTED'
-        lines.push("#{name}:#{this.frEscape(value)}")
+        lines.push("#{name}:#{Frame.frEscape(value)}")
       else
         lines.push("#{name}:#{value}")
     if @body && !skipContentLength
@@ -94,7 +94,7 @@ class Frame
     for line in headerLines.reverse()
       idx = line.indexOf(':')
       if escapeHeaderValues  && command != 'CONNECT' && command != 'CONNECTED'
-        headers[trim(line.substring(0, idx))] = this.frUnEscape(trim(line.substring(idx + 1)))
+        headers[trim(line.substring(0, idx))] = Frame.frUnEscape(trim(line.substring(idx + 1)))
       else
         headers[trim(line.substring(0, idx))] = trim(line.substring(idx + 1))
     # Parse body
@@ -157,13 +157,13 @@ class Frame
   #
   # @private
   @frEscape: (str) ->
-    str.replace(/\\/g, "\\\\").replace(/\r/g, "\\r").replace(/\n/g, "\\n").replace(/:/g, "\\c")
+    ("" + str).replace(/\\/g, "\\\\").replace(/\r/g, "\\r").replace(/\n/g, "\\n").replace(/:/g, "\\c")
 
   # Escape header values
   #
   # @private
   @frUnEscape: (str) ->
-    str.replace(/\\r/g, "\r").replace(/\\n/g, "\n").replace(/\\c/g, ":").replace(/\\\\/g, "\\")
+    ("" + str).replace(/\\r/g, "\r").replace(/\\n/g, "\n").replace(/\\c/g, ":").replace(/\\\\/g, "\\")
 
 # STOMP Client Class
 #
