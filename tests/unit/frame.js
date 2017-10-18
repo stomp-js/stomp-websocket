@@ -5,7 +5,7 @@ QUnit.test("escape header value", function (assert) {
   assert.equal(out, "anything\\\\a\\nb\\nc\\rd\\re\\cf\\c\\\\anything\\\\a\\nb\\nc\\rd\\re\\cf\\c\\\\");
 });
 
-QUnit.test("unEscape header value", function (assert) {
+QUnit.test("escapes and then unescapes header value to give original string", function (assert) {
   var orig = "anything\\a\nb\nc\rd\re:f:\\anything\\a\nb\nc\rd\re:f:\\";
   var out = Stomp.Frame.frUnEscape(Stomp.Frame.frEscape(orig));
   assert.equal(out, orig);
