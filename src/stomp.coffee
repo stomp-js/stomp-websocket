@@ -44,7 +44,8 @@ class Frame
   # @param command [String]
   # @param headers [Object]
   # @param body [String]
-  constructor: (@command, @headers={}, @body='') ->
+  # @param escapeHeaderValues [Boolean]
+  constructor: (@command, @headers={}, @body='', @escapeHeaderValues = false) ->
 
   # Provides a textual representation of the frame
   # suitable to be sent to the server
@@ -56,7 +57,10 @@ class Frame
     delete @headers['content-length'] if skipContentLength
 
     for own name, value of @headers
-      lines.push("#{name}:#{value}")
+      if @escapeHeaderValues && @command != 'CONNECT' && @command != 'CONNECTED'
+        lines.push("#{name}:#{Frame.frEscape(value)}")
+      else
+        lines.push("#{name}:#{value}")
     if @body && !skipContentLength
       lines.push("content-length:#{Frame.sizeOfUTF8(@body)}")
     lines.push(Byte.LF + @body)
@@ -75,7 +79,7 @@ class Frame
   # Unmarshall a single STOMP frame from a `data` string
   #
   # @private
-  unmarshallSingle= (data) ->
+  unmarshallSingle= (data, escapeHeaderValues=false) ->
     # search for 2 consecutives LF byte to split the command
     # and headers from the body
     divider = data.search(///#{Byte.LF}#{Byte.LF}///)
@@ -89,7 +93,10 @@ class Frame
     # value is used
     for line in headerLines.reverse()
       idx = line.indexOf(':')
-      headers[trim(line.substring(0, idx))] = trim(line.substring(idx + 1))
+      if escapeHeaderValues  && command != 'CONNECT' && command != 'CONNECTED'
+        headers[trim(line.substring(0, idx))] = Frame.frUnEscape(trim(line.substring(idx + 1)))
+      else
+        headers[trim(line.substring(0, idx))] = trim(line.substring(idx + 1))
     # Parse body
     # check for content-length or  topping at the first NULL byte found.
     body = ''
@@ -104,7 +111,7 @@ class Frame
         chr = data.charAt(i)
         break if chr is Byte.NULL
         body += chr
-    return new Frame(command, headers, body)
+    return new Frame(command, headers, body, escapeHeaderValues)
 
   # Split the data before unmarshalling every single STOMP frame.
   # Web socket servers can send multiple frames in a single websocket message.
@@ -116,7 +123,7 @@ class Frame
   # returns an *array* of Frame objects
   #
   # @private
-  @unmarshall: (datas) ->
+  @unmarshall: (datas, escapeHeaderValues=false) ->
     # Ugly list comprehension to split and unmarshall *multiple STOMP frames*
     # contained in a *single WebSocket frame*.
     # The data is split when a NULL byte (followed by zero or many LF bytes) is
@@ -126,7 +133,7 @@ class Frame
     r =
       frames:  []
       partial: ''
-    r.frames = (unmarshallSingle(frame) for frame in frames[0..-2])
+    r.frames = (unmarshallSingle(frame, escapeHeaderValues) for frame in frames[0..-2])
 
     # If this contains a final full message or just a acknowledgement of a PING
     # without any other content, process this frame, otherwise return the
@@ -134,7 +141,7 @@ class Frame
     last_frame = frames[-1..][0]
 
     if last_frame is Byte.LF or (last_frame.search ///#{Byte.NULL}#{Byte.LF}*$///) isnt -1
-      r.frames.push(unmarshallSingle(last_frame))
+      r.frames.push(unmarshallSingle(last_frame, escapeHeaderValues))
     else
       r.partial = last_frame
     return r
@@ -142,9 +149,21 @@ class Frame
   # Marshall a Stomp frame
   #
   # @private
-  @marshall: (command, headers, body) ->
-    frame = new Frame(command, headers, body)
+  @marshall: (command, headers, body, escapeHeaderValues) ->
+    frame = new Frame(command, headers, body, escapeHeaderValues)
     return frame.toString() + Byte.NULL
+
+  # Escape header values
+  #
+  # @private
+  @frEscape: (str) ->
+    ("" + str).replace(/\\/g, "\\\\").replace(/\r/g, "\\r").replace(/\n/g, "\\n").replace(/:/g, "\\c")
+
+  # Escape header values
+  #
+  # @private
+  @frUnEscape: (str) ->
+    ("" + str).replace(/\\r/g, "\r").replace(/\\n/g, "\n").replace(/\\c/g, ":").replace(/\\\\/g, "\\")
 
 # STOMP Client Class
 #
@@ -222,7 +241,7 @@ class Client
   #
   # @private
   _transmit: (command, headers, body) ->
-    out = Frame.marshall(command, headers, body)
+    out = Frame.marshall(command, headers, body, @escapeHeaderValues)
     @debug? ">>> " + out
     # if necessary, split the *STOMP* frame to send it on many smaller
     # *WebSocket* frames
@@ -321,6 +340,7 @@ class Client
   #
   # @note When auto reconnect is active, `connectCallback` and `errorCallback` will be called on each connect or error
   connect: (args...) ->
+    @escapeHeaderValues = false
     out = @_parseConnect(args...)
     [@headers, @connectCallback, @errorCallback] = out
     @_connect()
@@ -356,7 +376,7 @@ class Client
       # Handle STOMP frames received from the server
       # The unmarshall function returns the frames parsed and any remaining
       # data from partial frames.
-      unmarshalledData = Frame.unmarshall(@partialData + data)
+      unmarshalledData = Frame.unmarshall(@partialData + data, @escapeHeaderValues)
       @partialData = unmarshalledData.partial
       for frame in unmarshalledData.frames
         switch frame.command
@@ -365,6 +385,9 @@ class Client
             @debug? "connected to server #{frame.headers.server}"
             @connected = true
             @version = frame.headers.version;
+            # STOMP version 1.2 needs header values to be escaped
+            if @version == Stomp.VERSIONS.V1_2
+              @escapeHeaderValues = true
             @_setupHeartbeat(frame.headers)
             @connectCallback? frame
           # [MESSAGE Frame](http://stomp.github.com/stomp-specification-1.2.html#MESSAGE)
