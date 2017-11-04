@@ -1,5 +1,9 @@
 # Change Log
 
+## 3.1.2 (2017/11/04)
+
+* Header value escaping as per STOMP 1.2 standard.
+
 ## 3.1.0 (2017/07/05)
 
 * Updated tests to QUint latest version. Now using same set of tests
