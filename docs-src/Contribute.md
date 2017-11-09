@@ -50,12 +50,10 @@ Instructions on setting up development environment:
 ├── index.d.ts                     - Typescript type definitions
 ├── index.js                       - Entry point for nodejs
 ├── lib/                           - Compiled JS files
-│   ├── stomp-node.js              - Only used in NodeJS environment
 │   ├── stomp.js                   - Main library code
 │   └── stomp.min.js
 ├── package.json
 ├── src/                           - CoffeeSctipt files
-│   ├── stomp-node.coffee          - NodeJS specific stuff
 │   └── stomp.coffee               - Main library code
 ├── tests/                         - All tests
 │   ├── config/

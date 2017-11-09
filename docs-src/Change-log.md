@@ -1,5 +1,10 @@
 # Change Log
 
+## 4.0.0 (2017/11/09)
+
+* NodeJS has been upgraded to first class citizen. Dropped legacy support.
+* Major version change as this version is not backward compatible.
+
 ## 3.1.2 (2017/11/04)
 
 * Header value escaping as per STOMP 1.2 standard.

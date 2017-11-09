@@ -39,7 +39,6 @@ If you are existing user and will like to deep dive - API Reference for importan
 
 * [Stomp](https://stomp-js.github.io/stomp-websocket/codo/mixin/Stomp.html)
 * [Client](https://stomp-js.github.io/stomp-websocket/codo/class/Client.html)
-* [NodeJS Legacy](https://stomp-js.github.io/stomp-websocket/codo/file/src/stomp-node.coffee.html)
 
 ## NodeJS
 

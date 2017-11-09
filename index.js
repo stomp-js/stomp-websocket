@@ -8,10 +8,8 @@
 // Root of the `stompjs module`
 
 var Stomp = require('./lib/stomp.js');
-var StompNode = require('./lib/stomp-node.js');
-
 module.exports = Stomp.Stomp;
-module.exports.overTCP = StompNode.overTCP;
-module.exports.overWS = StompNode.overWS;
 
-Stomp.Stomp.WebSocketClass = require('websocket').w3cwebsocket;
+if (typeof WebSocket !== 'function') {
+  Stomp.Stomp.WebSocketClass = require('websocket').w3cwebsocket;
+}

@@ -57,7 +57,7 @@ specifications). This second argument can either be a single string
 **Notes:** 
 
 * In older versions of this library creating the client NodeJS was different.
-If you need the old behavior please see [Legacy NodeJS](nodejs.md.html).
+If you need the old behavior please use version 3.x.x of the library.
 * Recent versions of all web browsers and nodejs support WebSocket. However
 if you need to support older browsers, please see [SockJS Support](sockjs.md.html).
 

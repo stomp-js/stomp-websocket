@@ -19,7 +19,6 @@ documentation:
 
     * [Stomp](../../mixin/Stomp.html)
     * [Client](../../class/Client.html)
-    * [NodeJS Legacy](../../file/src/stomp-node.coffee.html)
 
 * [Change Log](Change-log.md.html)
 

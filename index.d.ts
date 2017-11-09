@@ -11,19 +11,13 @@ export const VERSIONS: {
 };
 
 export class Client {
-
     connected: boolean;
-    counter: number;
     heartbeat: {
         incoming: number,
         outgoing: number
     };
 
     reconnect_delay: number;
-
-    maxWebSocketFrameSize: number;
-    subscriptions: {};
-    ws: WebSocket;
 
     debug(...args: string[]): any;
 
@@ -70,6 +64,4 @@ export class Frame {
 }
 
 export function client(url: string, protocols?: string | Array<string>): Client;
-export function over(ws: WebSocket | (() => WebSocket)): Client;
-export function overTCP(host: string, port: number): Client;
-export function overWS(url: string): Client;
+export function over(ws: any | (() => any)): Client;
