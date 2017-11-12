@@ -10,8 +10,8 @@
 var Stomp = require('./lib/stomp.js');
 module.exports = Stomp.Stomp;
 
-module.exports.over = Stomp.over;
-module.exports.client = Stomp.client;
+module.exports.over = Stomp.Stomp.over;
+module.exports.client = Stomp.Stomp.client;
 
 if (typeof WebSocket !== 'function') {
   Stomp.Stomp.WebSocketClass = require('websocket').w3cwebsocket;
