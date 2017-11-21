@@ -19,6 +19,8 @@ export class Client {
 
     reconnect_delay: number;
 
+    ws: any;
+
     debug(...args: string[]): any;
 
     connect(headers: StompHeaders, connectCallback: (frame?: Frame) => any, errorCallback?: (error: string) => any): any;
