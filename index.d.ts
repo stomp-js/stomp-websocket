@@ -25,13 +25,13 @@ export class Client {
 
     connect(headers: StompHeaders, connectCallback: (frame?: Frame) => any, errorCallback?: (error: string) => any): any;
     connect(login: string, passcode: string, connectCallback: (frame?: Frame) => any, errorCallback?: (error: string) => any, host?: string): any;
-    disconnect(disconnectCallback: () => any, headers?: StompHeaders): any;
+    disconnect(disconnectCallback?: () => any, headers?: StompHeaders): any;
 
     send(destination: string, headers?: StompHeaders, body?: string): any;
     subscribe(destination: string, callback?: (message: Message) => any, headers?: StompHeaders): StompSubscription;
     onreceive: (message: Message) => void;
     onreceipt: (frame: Frame) => void;
-    unsubscribe(): any;
+    unsubscribe(id: string, headers?: StompHeaders): any;
 
     begin(transaction: string): any;
     commit(transaction: string): any;
@@ -42,6 +42,7 @@ export class Client {
 }
 
 export interface StompSubscription {
+    id: string;
     unsubscribe(headers?: StompHeaders): void;
 }
 
