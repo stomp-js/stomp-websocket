@@ -458,7 +458,7 @@ class Client
   # @private
   _schedule_reconnect: ->
     if @reconnect_delay > 0
-      @debug("STOMP: scheduling reconnection in #{@reconnect_delay}ms")
+      @debug?("STOMP: scheduling reconnection in #{@reconnect_delay}ms")
       # setTimeout is available in both Browser and Node.js environments
       setTimeout(=>
         if @connected
