@@ -38,3 +38,70 @@ QUnit.test("Reconnect", function (assert) {
   }, 1000);
 
 });
+
+QUnit.test("Should allow disconnecting", function (assert) {
+  var done = assert.async();
+
+  var num_try = 1;
+  var client = stompClient();
+  client.reconnect_delay = 300;
+  client.debug = TEST.debug;
+
+  var disconnectCallbackCalled = false;
+
+  client.connect(TEST.login, TEST.password,
+    function () {
+      assert.ok(client.connected, 'Client connected');
+
+      client.disconnect(function() {
+        assert.notOk(client.connected, 'Client should disconnect');
+        disconnectCallbackCalled = true;
+      });
+    });
+
+  setTimeout(function () {
+    assert.ok(disconnectCallbackCalled, 'disconnectCallback should have been called');
+    assert.notOk(client.connected, 'Client should not have reconnected');
+
+    done();
+  }, 500);
+
+});
+
+
+QUnit.test("Should allow disconnecting while waiting to reconnect", function (assert) {
+  var done = assert.async();
+
+  var num_try = 1;
+  var client = stompClient();
+  client.reconnect_delay = 300;
+  client.debug = TEST.debug;
+
+  client.connect(TEST.login, TEST.password,
+    function () {
+      assert.ok(client.connected, 'Client connected');
+
+      // when connected for the first time, we close the Websocket to force disconnect
+      if (num_try === 1) {
+        client.ws.close();
+      }
+
+      num_try++;
+    });
+
+  setTimeout(function () {
+    // in 200 ms the client should be disconnected
+    assert.notOk(client.connected, 'Client disconnected');
+    client.disconnect(function() {
+      assert.ok(false, 'Disconnect callback should not be called if client is disconnected');
+    });
+  }, 200);
+
+  // wait longer before declaring the test complete, in this interval
+  // it should not have reconnected
+  setTimeout(function() {
+    assert.notOk(client.connected, 'Client should not have reconnected');
+    done();
+  }, 450);
+
+});
