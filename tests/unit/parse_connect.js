@@ -11,17 +11,24 @@
         // called back if the client can not connect to STOMP broker
       };
 
+      myCloseEventCallback = function () {
+        // called back if the connection was closed
+      };
+
       // This only needs to be tested with ws: URL format
       client = Stomp.client(TEST.url);
 
-      checkArgs = function (args, expectedHeaders, expectedConnectCallback, expectedErrorCallback) {
+      checkArgs = function (args, expectedHeaders, expectedConnectCallback, expectedErrorCallback,
+                            expectedCloseEventCallback) {
         var headers = args[0];
         var connectCallback = args[1];
         var errorCallback = args[2];
+        var closeEventCallback = args[3];
 
         assert.deepEqual(headers, expectedHeaders);
         assert.strictEqual(connectCallback, expectedConnectCallback);
         assert.strictEqual(errorCallback, expectedErrorCallback);
+        assert.strictEqual(closeEventCallback, expectedCloseEventCallback);
       }
     }
   });
@@ -44,13 +51,24 @@
       myErrorCallback);
   });
 
+  QUnit.test("connect(login, passcode, connectCallback, errorCallback, closeEventCallback)", function (assert) {
+    checkArgs(
+      client._parseConnect("jmesnil", "wombats", myConnectCallback, myErrorCallback, myCloseEventCallback),
+
+      {login: 'jmesnil', passcode: 'wombats'},
+      myConnectCallback,
+      myErrorCallback,
+      myCloseEventCallback);
+  });
+
   QUnit.test("connect(login, passcode, connectCallback, errorCallback, vhost)", function (assert) {
     checkArgs(
-      client._parseConnect("jmesnil", "wombats", myConnectCallback, myErrorCallback, "myvhost"),
+      client._parseConnect("jmesnil", "wombats", myConnectCallback, myErrorCallback, myCloseEventCallback, "myvhost"),
 
       {login: 'jmesnil', passcode: 'wombats', host: 'myvhost'},
       myConnectCallback,
-      myErrorCallback);
+      myErrorCallback,
+      myCloseEventCallback);
   });
 
   QUnit.test("connect(headers, connectCallback)", function (assert) {

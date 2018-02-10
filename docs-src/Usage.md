@@ -104,11 +104,13 @@ API to use in most cases:
 ```javascript
   client.connect(login, passcode, connectCallback);
   client.connect(login, passcode, connectCallback, errorCallback);
-  client.connect(login, passcode, connectCallback, errorCallback, host);
+  client.connect(login, passcode, connectCallback, errorCallback, closeEventCallback);
+  client.connect(login, passcode, connectCallback, errorCallback, closeEventCallback, host);
 ```
 
 where `login`, `passcode` and `host` are strings. `connectCallback` and
- `errorCallback` are functions which will receive a `Frame` as argument.
+`errorCallback` is a function which will receive a `Frame` as argument and 
+`closeEventCallback` is a function which will receive a [CloseEvent](https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent)
 
 The `connect()` method also accepts two other variants if you need
  to pass additional headers:
@@ -116,10 +118,12 @@ The `connect()` method also accepts two other variants if you need
 ```javascript
   client.connect(headers, connectCallback);
   client.connect(headers, connectCallback, errorCallback);
+  client.connect(headers, connectCallback, errorCallback, closeEventCallback);
 ```
 
 where `header` is a `map`. `connectCallback` and
-`errorCallback` are functions which will receive a `Frame` as argument.
+`errorCallback` is a function which will receive a `Frame` as argument and 
+`closeEventCallback` is a function which will receive a [CloseEvent](https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent)
 
 
 Please note that if you use these forms, you will typically add `login`,

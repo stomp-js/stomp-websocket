@@ -289,20 +289,18 @@ class Client
   # @private
   _parseConnect: (args...) ->
     headers = {}
-    switch args.length
-      when 2
-        [headers, connectCallback] = args
-      when 3
-        if args[1] instanceof Function
-          [headers, connectCallback, errorCallback] = args
+    if args.length < 2
+      throw("Connect requires at least 2 arguments")
+    if args[1] instanceof Function
+      [headers, connectCallback, errorCallback, closeEventCallback] = args
+    else
+      switch args.length
+        when 6
+          [headers.login, headers.passcode, connectCallback, errorCallback, closeEventCallback, headers.host] = args
         else
-          [headers.login, headers.passcode, connectCallback] = args
-      when 4
-        [headers.login, headers.passcode, connectCallback, errorCallback] = args
-      else
-        [headers.login, headers.passcode, connectCallback, errorCallback, headers.host] = args
+          [headers.login, headers.passcode, connectCallback, errorCallback, closeEventCallback] = args
 
-    [headers, connectCallback, errorCallback]
+    [headers, connectCallback, errorCallback, closeEventCallback]
 
   # @see http://stomp.github.com/stomp-specification-1.2.html#CONNECT_or_STOMP_Frame CONNECT Frame
   #
@@ -317,7 +315,9 @@ class Client
   #
   # @overload connect(login, passcode, connectCallback, errorCallback)
   #
-  # @overload connect(login, passcode, connectCallback, errorCallback, host)
+  # @overload connect(login, passcode, connectCallback, errorCallback, closeEventCallback)
+  #
+  # @overload connect(login, passcode, connectCallback, errorCallback, closeEventCallback, host)
   #
   # @param headers [Object]
   # @option headers [String] login
@@ -325,6 +325,7 @@ class Client
   # @option headers [String] host virtual host to connect to. STOMP 1.2 makes it mandatory, however the broker may not mandate it
   # @param connectCallback [function(Frame)] Called upon a successful connect or reconnect
   # @param errorCallback [function(any)] Optional, called upon an error. The passed paramer may be a {Frame} or a message
+  # @param closeEventCallback [function(CloseEvent)] Optional, called when the websocket is closed.
   #
   # @param login [String]
   # @param passcode [String]
@@ -342,7 +343,7 @@ class Client
   connect: (args...) ->
     @escapeHeaderValues = false
     out = @_parseConnect(args...)
-    [@headers, @connectCallback, @errorCallback] = out
+    [@headers, @connectCallback, @errorCallback, @closeEventCallback] = out
     @_connect()
 
   # Refactored to make it callable multiple times, useful for reconnecting
@@ -351,6 +352,7 @@ class Client
   _connect: ->
     headers = @headers
     errorCallback = @errorCallback
+    closeEventCallback = @closeEventCallback
 
     @debug? "Opening Web Socket..."
 
@@ -441,9 +443,10 @@ class Client
             errorCallback?(frame)
           else
             @debug? "Unhandled frame: #{frame}"
-    @ws.onclose   = =>
+    @ws.onclose   = (closeEvent) =>
       msg = "Whoops! Lost connection to #{@ws.url}"
       @debug?(msg)
+      closeEventCallback?(closeEvent)
       @_cleanUp()
       errorCallback?(msg)
       @_schedule_reconnect()

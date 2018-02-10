@@ -107,6 +107,7 @@ names. So, running both together may cause unexpected failures._
 
 ## Submit pull requests
 
+* Run `cake build` to update generated files
 * Please follow GitHub guidelines. Raise an issue if you are unclear.
 
 ## STOMP API
