@@ -70,6 +70,9 @@ Instructions on setting up development environment:
 * Edit `tests/config/browser-config.js` and `tests/config/node-config.js` as per
   your setup. Defaults should work for a RabbitMQ default setup on localhost.
 * Please note that in RabbitMQ you will need to enable Stomp and WebStomp plugins.
+* A RabbitMQ Dockerfile is provided with the necessary plugins. To use it, run:
+    * `docker build -t myrabbitmq .`
+    * `docker run -d -p 15674:15674 myrabbitmq`
 
 ## Building and testing
 
@@ -95,6 +98,9 @@ $ cake watch
 
 * Browser and node environments use the same set of test cases.
 * Open `test/index.html` in your browser.
+* If Chrome fails with "Uncaught DOMException: Failed to read the 'sessionStorage' property from 'Window'
+  you need to [Unblock third-party cookies](https://www.chromium.org/for-testers/bug-reporting-guidelines/uncaught-securityerror-failed-to-read-the-localstorage-property-from-window-access-is-denied-for-this-document) 
+  or use Firefox.  
 
 _**Caution:** As both browser and nodejs use same set of test cases and hence same queue
 names. So, running both together may cause unexpected failures._
