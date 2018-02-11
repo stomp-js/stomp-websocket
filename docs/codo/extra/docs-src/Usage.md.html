@@ -67,7 +67,8 @@ or <a href="https://raw.githubusercontent.com/stomp-js/stomp-websocket/master/li
 <h2 id="create-a-stomp-client">Create a STOMP client</h2><p>STOMP JavaScript clients will communicate to a STOMP server using a <code>ws://</code> URL.</p><p>To create a STOMP client JavaScript object, you need to call <code>Stomp.client(url)</code>
  with the URL corresponding to the server&#39;s WebSocket endpoint:</p><pre><code class="lang-javascript">  var url = &quot;ws://localhost:15674/ws&quot;;
   var client = Stomp.client(url);
-</code></pre><p>The Stomp.client(url, protocols) can also be used to override the </p><p>default subprotocols provided by the library: 
+</code></pre><p>The Stomp.client(url, protocols) can also be used to override the 
+default subprotocols provided by the library: 
 [&#39;v10.stomp&#39;, &#39;v11.stomp&#39;, &#39;v12.stomp&#39;] (for STOMP 1.0, 1.1, &amp; 1.2 
 specifications). This second argument can either be a single string
  or an array of strings to specify multiple subprotocols.</p><p><strong>Notes:</strong> </p><ul>

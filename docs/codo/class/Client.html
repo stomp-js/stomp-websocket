@@ -469,7 +469,7 @@ version with headers to pass your broker specific options.</p>
     </p>
     <div class='docstring'>
   <p>Disconnect from the STOMP broker. To ensure graceful shutdown it sends a DISCONNECT Frame
-and wait till the broker acknowledges.</p>
+and wait till the broker acknowledges.</p><p>disconnectCallback will be called only if the broker was actually connected.</p>
 </div>
 <div class='tags'>
   <h3>Parameters:</h3>
