@@ -99,6 +99,11 @@
 <li>Edit <code>tests/config/browser-config.js</code> and <code>tests/config/node-config.js</code> as per
 your setup. Defaults should work for a RabbitMQ default setup on localhost.</li>
 <li>Please note that in RabbitMQ you will need to enable Stomp and WebStomp plugins.</li>
+<li>A RabbitMQ Dockerfile is provided with the necessary plugins. To use it, run:<ul>
+<li><code>docker build -t myrabbitmq .</code></li>
+<li><code>docker run -d -p 15674:15674 myrabbitmq</code></li>
+</ul>
+</li>
 </ul>
 <h2 id="building-and-testing">Building and testing</h2><p>To build JavaScript from the CoffeeScript source code:</p><pre><code class="lang-bash">$ cake build
 </code></pre><p>To run tests using nodejs:</p><pre><code class="lang-bash">$ cake test
@@ -108,9 +113,13 @@ your setup. Defaults should work for a RabbitMQ default setup on localhost.</li>
 <ul>
 <li>Browser and node environments use the same set of test cases.</li>
 <li>Open <code>test/index.html</code> in your browser.</li>
+<li>If Chrome fails with &quot;Uncaught DOMException: Failed to read the &#39;sessionStorage&#39; property from &#39;Window&#39;
+you need to <a href="https://www.chromium.org/for-testers/bug-reporting-guidelines/uncaught-securityerror-failed-to-read-the-localstorage-property-from-window-access-is-denied-for-this-document">Unblock third-party cookies</a> 
+or use Firefox.  </li>
 </ul><p><em><strong>Caution:</strong> As both browser and nodejs use same set of test cases and hence same queue
 names. So, running both together may cause unexpected failures.</em></p><h2 id="submit-pull-requests">Submit pull requests</h2>
 <ul>
+<li>Run <code>cake build</code> to update generated files</li>
 <li>Please follow GitHub guidelines. Raise an issue if you are unclear.</li>
 </ul>
 <h2 id="stomp-api">STOMP API</h2><p>STOMP over WebSocket provides a straightforward mapping from a STOMP frame 

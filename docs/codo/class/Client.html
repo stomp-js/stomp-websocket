@@ -268,7 +268,11 @@ on a client instance to handle differently the debug messages:</p>
       <br>
       ~
 (void)
-<b>connect</b><span>(login, passcode, connectCallback, errorCallback, host)</span>
+<b>connect</b><span>(login, passcode, connectCallback, errorCallback, closeEventCallback)</span>
+      <br>
+      ~
+(void)
+<b>connect</b><span>(login, passcode, connectCallback, errorCallback, closeEventCallback, host)</span>
       <br>
     </p>
     <div class='docstring'>
@@ -321,6 +325,16 @@ version with headers to pass your broker specific options.</p>
       </span>
       &mdash;
       <span class='desc'>Optional, called upon an error. The passed paramer may be a <a href='../class/Frame.html'>Frame</a> or a message </span>
+    </li>
+    <li>
+      <span class='name'>closeEventCallback</span>
+      <span class='type'>
+        (
+          <tt>function(CloseEvent)</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Optional, called when the websocket is closed. </span>
     </li>
     <li>
       <span class='name'>login</span>
@@ -429,7 +443,16 @@ version with headers to pass your broker specific options.</p>
       <p class='signature'>
         ~
 (void)
-<b>connect</b><span>(login, passcode, connectCallback, errorCallback, host)</span>
+<b>connect</b><span>(login, passcode, connectCallback, errorCallback, closeEventCallback)</span>
+      </p>
+      <div class='tags'>
+</div>
+    </div>
+    <div class='overload'>
+      <p class='signature'>
+        ~
+(void)
+<b>connect</b><span>(login, passcode, connectCallback, errorCallback, closeEventCallback, host)</span>
       </p>
       <div class='tags'>
 </div>

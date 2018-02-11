@@ -67,8 +67,7 @@ or <a href="https://raw.githubusercontent.com/stomp-js/stomp-websocket/master/li
 <h2 id="create-a-stomp-client">Create a STOMP client</h2><p>STOMP JavaScript clients will communicate to a STOMP server using a <code>ws://</code> URL.</p><p>To create a STOMP client JavaScript object, you need to call <code>Stomp.client(url)</code>
  with the URL corresponding to the server&#39;s WebSocket endpoint:</p><pre><code class="lang-javascript">  var url = &quot;ws://localhost:15674/ws&quot;;
   var client = Stomp.client(url);
-</code></pre><p>The Stomp.client(url, protocols) can also be used to override the 
-default subprotocols provided by the library: 
+</code></pre><p>The Stomp.client(url, protocols) can also be used to override the </p><p>default subprotocols provided by the library: 
 [&#39;v10.stomp&#39;, &#39;v11.stomp&#39;, &#39;v12.stomp&#39;] (for STOMP 1.0, 1.1, &amp; 1.2 
 specifications). This second argument can either be a single string
  or an array of strings to specify multiple subprotocols.</p><p><strong>Notes:</strong> </p><ul>
@@ -101,13 +100,17 @@ you need to pass a <code>connect_callback</code> function to the <code>connect()
 </code></pre><p>The <code>connect()</code> method accepts different number of arguments to provide a simple 
 API to use in most cases:</p><pre><code class="lang-javascript">  client.connect(login, passcode, connectCallback);
   client.connect(login, passcode, connectCallback, errorCallback);
-  client.connect(login, passcode, connectCallback, errorCallback, host);
+  client.connect(login, passcode, connectCallback, errorCallback, closeEventCallback);
+  client.connect(login, passcode, connectCallback, errorCallback, closeEventCallback, host);
 </code></pre><p>where <code>login</code>, <code>passcode</code> and <code>host</code> are strings. <code>connectCallback</code> and
- <code>errorCallback</code> are functions which will receive a <code>Frame</code> as argument.</p><p>The <code>connect()</code> method also accepts two other variants if you need
+<code>errorCallback</code> is a function which will receive a <code>Frame</code> as argument and 
+<code>closeEventCallback</code> is a function which will receive a <a href="https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent">CloseEvent</a></p><p>The <code>connect()</code> method also accepts two other variants if you need
  to pass additional headers:</p><pre><code class="lang-javascript">  client.connect(headers, connectCallback);
   client.connect(headers, connectCallback, errorCallback);
+  client.connect(headers, connectCallback, errorCallback, closeEventCallback);
 </code></pre><p>where <code>header</code> is a <code>map</code>. <code>connectCallback</code> and
-<code>errorCallback</code> are functions which will receive a <code>Frame</code> as argument.</p><p>Please note that if you use these forms, you will typically add <code>login</code>,
+<code>errorCallback</code> is a function which will receive a <code>Frame</code> as argument and 
+<code>closeEventCallback</code> is a function which will receive a <a href="https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent">CloseEvent</a></p><p>Please note that if you use these forms, you will typically add <code>login</code>,
  <code>passcode</code> (and <code>host</code>) headers yourself:</p><pre><code class="lang-javascript">    var headers = {
       login: &#39;mylogin&#39;,
       passcode: &#39;mypasscode&#39;,
