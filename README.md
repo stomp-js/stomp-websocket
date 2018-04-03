@@ -42,8 +42,8 @@ If you are an existing user and will like to deep dive - API references for impo
 
 ## NodeJS
 
-If you are using this library in NodeJS you should definitely check 
-[NodeJS Legacy](https://stomp-js.github.io/stomp-websocket/codo/extra/docs-src/nodejs.md.html).
+If you are using this library in NodeJS you might need to make changes, please check
+[Upgrading](https://stomp-js.github.io/stomp-websocket/codo/extra/docs-src/Upgrade.md.html). 
 
 ## Usage with Angular2/4/5
 

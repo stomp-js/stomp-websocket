@@ -61,7 +61,12 @@ See also:
 
 * [Stomp.over](../../mixin/Stomp.html#over-)
 
-## NodeJS - Stomp.overWS -> Stomp.client
+## NodeJS
+
+NodeJS now supports same semantics as the browser, so you might need to make changes
+if you were using NodeJS specific syntax.
+
+### Stomp.overWS -> Stomp.client
 
 Just change the method name:
 
@@ -74,23 +79,17 @@ Just change the method name:
     var client = Stomp.client("ws://localhost:61614/stomp");
 ```
 
-Please note that even though both methods seem similar, these are very differently
-implemented.
-
-See also:
-
-* [Stomp.overWS](../../file/src/stomp-node.coffee.html#overWS-)
 * [Stomp.client](../../mixin/Stomp.html#client-)
 
 
-## NodeJS - Stomp.overTCP -> Stomp.client
+### Stomp.overTCP -> Stomp.client
 
-See also:
+The older code to handle STOMP over TCP was not properly maintained. So, this library
+drops support for using STOMP over raw TCP. If you need that functionality you may
+need to use the original version of this library from:
+https://github.com/jmesnil/stomp-websocket
 
-* [Stomp.overTCP](../../file/src/stomp-node.coffee.html#overTCP-) 
-* [Stomp.client](../../mixin/Stomp.html#client-)
-
-It is little more involved than it seems. The following is a summary:
+To upgrade:
 
 * Ensure that your STOMP broker is configured to communicate STOMP over
   WebSocket.
@@ -106,6 +105,10 @@ It is little more involved than it seems. The following is a summary:
 ```
 
 Do test your application.
+
+See also:
+
+* [Stomp.client](../../mixin/Stomp.html#client-)
 
 ## SockJS -> WebSocket
 

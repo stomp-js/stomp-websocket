@@ -74,24 +74,27 @@ of <code>0</code> indicates auto reconnect is disabled.</p><pre><code class="lan
 </code></pre><p>See also:</p><ul>
 <li><a href="../../mixin/Stomp.html#over-">Stomp.over</a></li>
 </ul>
-<h2 id="nodejs-stomp-overws-stomp-client">NodeJS - Stomp.overWS -&gt; Stomp.client</h2><p>Just change the method name:</p><pre><code class="lang-javascript">    var client = Stomp.overWS(&quot;ws://localhost:61614/stomp&quot;);
+<h2 id="nodejs">NodeJS</h2><p>NodeJS now supports same semantics as the browser, so you might need to make changes
+if you were using NodeJS specific syntax.</p><h3 id="stomp-overws-stomp-client">Stomp.overWS -&gt; Stomp.client</h3><p>Just change the method name:</p><pre><code class="lang-javascript">    var client = Stomp.overWS(&quot;ws://localhost:61614/stomp&quot;);
 </code></pre><p> to</p><pre><code class="lang-javascript">    var client = Stomp.client(&quot;ws://localhost:61614/stomp&quot;);
-</code></pre><p>Please note that even though both methods seem similar, these are very differently
-implemented.</p><p>See also:</p><ul>
-<li><a href="../../file/src/stomp-node.coffee.html#overWS-">Stomp.overWS</a></li>
+</code></pre>
+<ul>
 <li><a href="../../mixin/Stomp.html#client-">Stomp.client</a></li>
 </ul>
-<h2 id="nodejs-stomp-overtcp-stomp-client">NodeJS - Stomp.overTCP -&gt; Stomp.client</h2><p>See also:</p><ul>
-<li><a href="../../file/src/stomp-node.coffee.html#overTCP-">Stomp.overTCP</a> </li>
-<li><a href="../../mixin/Stomp.html#client-">Stomp.client</a></li>
-</ul><p>It is little more involved than it seems. The following is a summary:</p><ul>
+<h3 id="stomp-overtcp-stomp-client">Stomp.overTCP -&gt; Stomp.client</h3><p>The older code to handle STOMP over TCP was not properly maintained. So, this library
+drops support for using STOMP over raw TCP. If you need that functionality you may
+need to use the original version of this library from:
+<a href="https://github.com/jmesnil/stomp-websocket">https://github.com/jmesnil/stomp-websocket</a></p><p>To upgrade:</p><ul>
 <li>Ensure that your STOMP broker is configured to communicate STOMP over
 WebSocket.</li>
 <li>Get the WebSocket endpoint URL - typically like <code>ws://localhost:61614/stomp</code></li>
 </ul>
 <pre><code class="lang-javascript">    var client = Stomp.overTCP(&quot;localhost&quot;, 61613);
 </code></pre><p> to</p><pre><code class="lang-javascript">    var client = Stomp.client(&quot;ws://localhost:61614/stomp&quot;);
-</code></pre><p>Do test your application.</p><h2 id="sockjs-websocket">SockJS -&gt; WebSocket</h2><p>Summary of steps:</p><ul>
+</code></pre><p>Do test your application.</p><p>See also:</p><ul>
+<li><a href="../../mixin/Stomp.html#client-">Stomp.client</a></li>
+</ul>
+<h2 id="sockjs-websocket">SockJS -&gt; WebSocket</h2><p>Summary of steps:</p><ul>
 <li>Ensure that your STOMP broker is configured to communicate STOMP over
 WebSocket.</li>
 <li>SockJS and WebSocket use different handshake mechanism, so, their end points
