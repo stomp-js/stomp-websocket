@@ -1,8 +1,8 @@
-// Type definitions for stompjs 4.0
-// Project: https://github.com/jmesnil/stomp-websocket
+// Type definitions for @stomp/stompjs 4.x
+// Project: https://github.com/stomp-js/stomp-websocket
 // Definitions by: Jimi Charalampidis <https://github.com/jimic>
 //                 Deepak Kumar <https://github.com/kum-deepak>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+// Definitions: https://github.com/stomp-js/stomp-websocket/blob/master/index.d.ts
 
 export const VERSIONS: {
     V1_0: string,
