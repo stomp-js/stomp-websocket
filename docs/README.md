@@ -72,6 +72,7 @@ If you want to understand the code, develop, or contribute. Please visit
  * [Deepak Kumar](https://github.com/kum-deepak)
  * Astha Deep
  * [Dillon Sellars](https://github.com/dillon-sellars)
+ * [Jimi Charalampidis](https://github.com/jimic)
 
 ## License
 
