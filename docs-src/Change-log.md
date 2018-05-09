@@ -1,5 +1,26 @@
 # Change Log
 
+## 4.0.3 (2018/05/09)
+
+* Add to Bower, fixes [#26](https://github.com/stomp-js/stomp-websocket/issues/26)
+* Several documentation cleanup, fixes [#27](https://github.com/stomp-js/stomp-websocket/issues/27)
+* Updated typescript definitions, Thanks [Jimi Charalampidis](https://github.com/jimic).
+  See: [#33](https://github.com/stomp-js/stomp-websocket/pull/33)
+* I need to be more disciplined. Caught up on ChangeLog updates :)
+
+## 4.0.2 (2018/02/23)
+
+* Dockerfile for RabbitMQ. Thanks [Dillon Sellars](https://github.com/dillon-sellars).
+  See: [#22](https://github.com/stomp-js/stomp-websocket/pull/22)
+* Add closeEventCallback to expose the websocket CloseEvent.
+  Thanks [Dillon Sellars](https://github.com/dillon-sellars).
+  See: [#23](https://github.com/stomp-js/stomp-websocket/pull/23)
+* Cleanup disconnect code, fixes [#21](https://github.com/stomp-js/stomp-websocket/issues/21)
+
+## 4.0.1 (2018/01/29)
+
+* Fixes [#20](https://github.com/stomp-js/stomp-websocket/issues/20)
+
 ## 4.0.0 (2017/11/09)
 
 * NodeJS has been upgraded to first class citizen. Dropped legacy support.
