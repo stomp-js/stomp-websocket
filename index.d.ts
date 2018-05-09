@@ -1,7 +1,8 @@
-// Type definitions for stompjs 2.3
-// Project: https://github.com/jmesnil/stomp-websocket
+// Type definitions for @stomp/stompjs 4.x
+// Project: https://github.com/stomp-js/stomp-websocket
 // Definitions by: Jimi Charalampidis <https://github.com/jimic>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+//                 Deepak Kumar <https://github.com/kum-deepak>
+// Definitions: https://github.com/stomp-js/stomp-websocket/blob/master/index.d.ts
 
 export const VERSIONS: {
     V1_0: string,
@@ -31,7 +32,7 @@ export class Client {
     subscribe(destination: string, callback?: (message: Message) => any, headers?: StompHeaders): StompSubscription;
     onreceive: (message: Message) => void;
     onreceipt: (frame: Frame) => void;
-    unsubscribe(id: string, headers?: StompHeaders): any;
+    unsubscribe(id: string, headers?: StompHeaders): void;
 
     begin(transaction: string): any;
     commit(transaction: string): any;
@@ -48,7 +49,7 @@ export interface StompSubscription {
 
 export class StompHeaders { [key: string]: string }
 
-export class Message extends Frame {
+export interface Message extends Frame {
     ack(headers?: StompHeaders): any;
     nack(headers?: StompHeaders): any;
 }
@@ -61,9 +62,9 @@ export class Frame {
     body: string;
 
     toString(): string;
-    sizeOfUTF8(s: string): number;
-    unmarshall(datas: any): any;
-    marshall(command: string, headers?: StompHeaders, body?: string): any;
+    static sizeOfUTF8(s: string): number;
+    static unmarshall(datas: any): any;
+    static marshall(command: string, headers?: StompHeaders, body?: string): any;
 }
 
 export function client(url: string, protocols?: string | Array<string>): Client;
