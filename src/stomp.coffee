@@ -291,7 +291,7 @@ class Client
     headers = {}
     if args.length < 2
       throw("Connect requires at least 2 arguments")
-    if args[1] instanceof Function
+    if typeof(args[1]) == 'function'
       [headers, connectCallback, errorCallback, closeEventCallback] = args
     else
       switch args.length
