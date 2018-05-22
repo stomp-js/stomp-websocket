@@ -1,5 +1,9 @@
 # Change Log
 
+## 4.0.4 (2018/05/22)
+
+* GWT Compatibility, fixes [#38](https://github.com/stomp-js/stomp-websocket/issues/38)
+
 ## 4.0.3 (2018/05/09)
 
 * Add to Bower, fixes [#26](https://github.com/stomp-js/stomp-websocket/issues/26)
