@@ -73,6 +73,7 @@ If you want to understand the code, develop, or contribute. Please visit
  * Astha Deep
  * [Dillon Sellars](https://github.com/dillon-sellars)
  * [Jimi Charalampidis](https://github.com/jimic)
+ * [Raul](https://github.com/rulonder)
 
 ## License
 

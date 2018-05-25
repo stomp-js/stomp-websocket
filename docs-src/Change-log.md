@@ -1,5 +1,10 @@
 # Change Log
 
+## 4.0.5 (2018/05/26)
+
+* Updates in typescript definitions, Thanks [Raul](https://github.com/rulonder),
+  see: [#39](https://github.com/stomp-js/stomp-websocket/pull/39)
+
 ## 4.0.4 (2018/05/22)
 
 * GWT Compatibility, fixes [#38](https://github.com/stomp-js/stomp-websocket/issues/38)
