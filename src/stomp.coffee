@@ -358,6 +358,10 @@ class Client
     errorCallback = @errorCallback
     closeEventCallback = @closeEventCallback
 
+    unless @_active
+      @debug 'Client has been marked inactive, will not attempt to connect'
+      return
+
     @debug? "Opening Web Socket..."
 
     # Get the actual Websocket (or a similar object)
