@@ -64,6 +64,12 @@ Please visit [Change Log](https://stomp-js.github.io/stomp-websocket/codo/extra/
 If you want to understand the code, develop, or contribute. Please visit
 [How to contribute](https://stomp-js.github.io/stomp-websocket/codo/extra/docs-src/Contribute.md.html). 
 
+## Big Thanks
+
+Cross-browser Testing Platform and Open Source <3 Provided by [Sauce Labs][homepage]
+
+[homepage]: https://saucelabs.com
+
 ## Authors
 
  * [Jeff Mesnil](http://jmesnil.net/)
