@@ -230,13 +230,13 @@ class Client
   # @param message [String]
   debug: (message) ->
     window?.console?.log message
-      
+
   # Utility method to get the current timestamp (Date.now is not defined in IE8)
   #
   # @private
   now= ->
     if Date.now then Date.now() else new Date().valueOf
-  
+
   # Base method to transmit any stomp frame
   #
   # @private
@@ -627,7 +627,7 @@ class Client
       abort: ->
         client.abort txid
     }
-  
+
   # @see http://stomp.github.com/stomp-specification-1.2.html#COMMIT COMMIT Frame
   #
   # Commit a transaction.
@@ -644,7 +644,7 @@ class Client
     @_transmit "COMMIT", {
       transaction: transaction_id
     }
-  
+
   # @see http://stomp.github.com/stomp-specification-1.2.html#ABORT ABORT Frame
   #
   # Abort a transaction.
@@ -661,7 +661,7 @@ class Client
     @_transmit "ABORT", {
       transaction: transaction_id
     }
-  
+
   # @see http://stomp.github.com/stomp-specification-1.2.html#ACK ACK Frame
   #
   # ACK a message. It is preferable to acknowledge a message by calling `ack()` directly
