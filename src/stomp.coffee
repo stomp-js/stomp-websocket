@@ -374,8 +374,7 @@ class Client
         arr = new Uint8Array(evt.data)
         @debug? "--- got data length: #{arr.length}"
         # Return a string formed by all the char codes stored in the Uint8array
-        encodedString = String.fromCharCode.apply(null, arr)
-        decodeURIComponent(escape(atob(encodedString)))
+        (String.fromCharCode(c) for c in arr).join('')
       else
         # take the data directly from the WebSocket `data` field
         evt.data
