@@ -52,7 +52,7 @@ QUnit.test("Send and receive a message with a multi-byte UTF8 string", function 
     function () {
       client.subscribe(TEST.destination, function (message) {
         assert.equal(message.body, payload);
-        assert.equal(message.body.length, 26);
+        assert.equal(message.body.length, 28);
         client.disconnect();
 
         done();
