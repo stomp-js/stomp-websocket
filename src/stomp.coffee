@@ -367,6 +367,27 @@ class Client
     # Get the actual Websocket (or a similar object)
     @ws= @ws_fn()
 
+    UTF8ArrayToStr = (array) =>
+      out = ""
+      len = array.length
+      i = 0
+      while(i < len)
+        c = array[i++]
+        switch(c >> 4)
+          when 0,1,2,3,4,5,6,7
+            # 0xxxxxxx
+            out += String.fromCharCode(c)
+          when 12,13
+            # 110x xxxx   10xx xxxx
+            char2 = array[i++]
+            out += String.fromCharCode(((c & 0x1F) << 6) | (char2 & 0x3F))
+          when 14
+            # 1110 xxxx  10xx xxxx  10xx xxxx
+            char2 = array[i++]
+            char3 = array[i++]
+            out += String.fromCharCode(((c & 0x0F) << 12) | ((char2 & 0x3F) << 6) | ((char3 & 0x3F) << 0))
+      return out
+
     @ws.onmessage = (evt) =>
       data = if typeof(ArrayBuffer) != 'undefined' and evt.data instanceof ArrayBuffer
         # the data is stored inside an ArrayBuffer, we decode it to get the
@@ -374,7 +395,8 @@ class Client
         arr = new Uint8Array(evt.data)
         @debug? "--- got data length: #{arr.length}"
         # Return a string formed by all the char codes stored in the Uint8array
-        (String.fromCharCode(c) for c in arr).join('')
+        #(String.fromCharCode(c) for c in arr).join('')
+        UTF8ArrayToStr(arr)
       else
         # take the data directly from the WebSocket `data` field
         evt.data

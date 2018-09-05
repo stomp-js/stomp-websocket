@@ -24,7 +24,7 @@ QUnit.test("Send and receive a message with a JSON body", function (assert) {
   var done = assert.async();
 
   var client = stompClient();
-  var payload = {text: "hello", bool: true, value: Math.random()};
+  var payload = { text: "hello", bool: true, value: Math.random() };
 
   client.connect(TEST.login, TEST.password,
     function () {
@@ -39,5 +39,24 @@ QUnit.test("Send and receive a message with a JSON body", function (assert) {
       });
 
       client.send(TEST.destination, {}, JSON.stringify(payload));
+    });
+});
+
+QUnit.test("Send and receive a message with a multi-byte UTF8 string", function (assert) {
+  var done = assert.async();
+
+  var client = stompClient();
+  var payload = "Älä sinä yhtään and السابق";
+
+  client.connect(TEST.login, TEST.password,
+    function () {
+      client.subscribe(TEST.destination, function (message) {
+        assert.equal(message.body, payload);
+        client.disconnect();
+
+        done();
+      });
+
+      client.send(TEST.destination, {}, payload);
     });
 });
