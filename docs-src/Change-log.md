@@ -1,5 +1,15 @@
 # Change Log
 
+## 4.0.8 (2018/09/05)
+
+* Non ASCII UTF8 characters are correctly received now, fixes: 
+  [#46](https://github.com/stomp-js/stomp-websocket/pull/46).
+  Thanks [Aleksandar Ivanov](https://github.com/Smiche).
+
+## 4.0.7 (2018/07/12)
+
+* Fix - an issue in reconnection in some cases.
+
 ## 4.0.6 (2018/05/26)
 
 * Updates in typescript definitions, Thanks [Raul](https://github.com/rulonder),

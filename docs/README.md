@@ -80,6 +80,7 @@ Cross-browser Testing Platform and Open Source <3 Provided by [Sauce Labs][homep
  * [Dillon Sellars](https://github.com/dillon-sellars)
  * [Jimi Charalampidis](https://github.com/jimic)
  * [Raul](https://github.com/rulonder)
+ * [Aleksandar Ivanov](https://github.com/Smiche)
 
 ## License
 
