@@ -51,7 +51,7 @@ QUnit.test("Send and receive a message with a multi-byte UTF8 string", function 
   client.connect(TEST.login, TEST.password,
     function () {
       client.subscribe(TEST.destination, function (message) {
-        assert.equal(message.body, payload);
+        assert.equal(message.body.replace(/^"(.+(?="$))"$/, '$1'), payload);
         assert.equal(message.body.length, 28);
         client.disconnect();
 
