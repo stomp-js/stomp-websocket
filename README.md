@@ -5,6 +5,14 @@
 This library provides a WebSocket over STOMP client for Web browser or node.js 
 applications.
 
+# Important
+
+This repository has code for version 3.x.x./4.x.x.
+Version 5.x.x onwards is being maintained at https://github.com/stomp-js/stompjs
+
+Only security updates will be carried out in 4.x.x series.
+Please consider upgrading to 5.0.0 (https://stomp-js.github.io/stompjs/additional-documentation/upgrading.html)
+
 # Introduction
 
 This library allows you to connect to a STOMP broker over WebSocket. This library
